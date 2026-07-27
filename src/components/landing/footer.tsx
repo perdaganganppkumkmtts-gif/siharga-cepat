@@ -587,7 +587,7 @@ h-[250px]
 title="Lokasi Dinas PPK dan UMKM"
 
 src="
-https://www.google.com/maps/embed?pb=!4v1784668238691!6m8!1m7!1sCAoSLEFGMVFpcE9vZkFhQm9YVnVvV3Z5ZlF1T2JxM0VhZlRr!2m2!1d-9.860675887872393!2d124.26015591646534!3f0!4f0!5f0.7820865974627469
+https://www.google.com/maps/embed?pb=!4v1785170038156!6m8!1m7!1sABLVW3pCHbTZKkQ08dpdyg!2m2!1d-9.860185818938882!2d124.2605321364388!3f161.02011841377427!4f-3.4353461255451663!5f0.7820865974627469
 "
 
 className="
@@ -600,7 +600,7 @@ loading="lazy"
 
 allowFullScreen
 
-referrerPolicy="no-referrer-when-downgrade"
+referrerPolicy="strict-origin-when-cross-origin"
 
 />
 
