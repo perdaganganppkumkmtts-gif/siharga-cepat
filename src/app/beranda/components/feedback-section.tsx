@@ -1,6 +1,5 @@
 "use client"
 
-
 import {
   useState
 } from "react"
@@ -9,13 +8,6 @@ import {
 import {
   motion
 } from "framer-motion"
-
-
-import {
-  Star,
-  Send,
-  Loader2
-} from "lucide-react"
 
 
 import {
@@ -32,24 +24,44 @@ import {
   DotPattern
 } from "@/components/dot-pattern"
 
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 
-import { toast } from "sonner"
+import {
+  Input
+} from "@/components/ui/input"
+
+
+import {
+  Textarea
+} from "@/components/ui/textarea"
+
+
+import {
+  toast
+} from "sonner"
+
 
 import {
   Badge
 } from "@/components/ui/badge"
 
+import {
+  Star,
+  Send,
+  Loader2,
+  MessageSquare
+} from "lucide-react"
+
 export function FeedbackSection(){
 
-
+const [website,setWebsite] =
+useState("")
 
 const [nama,setNama] =
 useState("")
 
 
-const [whatsapp, setWhatsapp] = useState("")
+const [whatsapp,setWhatsapp] =
+useState("")
 
 
 const [pesan,setPesan] =
@@ -66,34 +78,163 @@ useState(false)
 
 
 
+const [errors,setErrors] =
+useState({
+
+nama:"",
+whatsapp:"",
+pesan:"",
+rating:""
+
+})
+
+
+
+
+
+
+
+function validate(){
+
+// ANTI BOT HONEYPOT
+
+if(website){
+
+toast.error(
+"Pengiriman tidak valid."
+)
+
+return false
+
+}
+
+
+let valid = true
+
+
+const newErrors = {
+
+nama:"",
+whatsapp:"",
+pesan:"",
+rating:""
+
+}
+
+
+
+
+
+// NAMA
+
+if(!nama.trim()){
+
+newErrors.nama =
+"Nama wajib diisi."
+
+valid = false
+
+}
+
+
+
+
+
+// WHATSAPP
+
+if(!whatsapp.trim()){
+
+newErrors.whatsapp =
+"Nomor WhatsApp wajib diisi."
+
+valid = false
+
+
+}
+else if(
+!/^08\d{8,11}$/.test(whatsapp)
+){
+
+newErrors.whatsapp =
+"Format WhatsApp tidak valid. Contoh: 081200000000."
+
+valid = false
+
+}
+
+
+
+
+
+
+
+// PESAN
+
+if(!pesan.trim()){
+
+newErrors.pesan =
+"Saran atau masukan wajib diisi."
+
+valid = false
+
+}
+
+
+
+
+
+
+// RATING
+
+if(rating === 0){
+
+newErrors.rating =
+"Silakan pilih rating kepuasan."
+
+valid = false
+
+}
+
+
+
+
+
+
+setErrors(newErrors)
+
+
+return valid
+
+
+}
+
+
+
+
+
 
 
 
 
 async function handleSubmit(){
 
-  if (loading) return
 
-if (
-  !nama.trim() ||
-  !whatsapp.trim() ||
-  !pesan.trim() ||
-  rating === 0
-) {
+if(loading)
+return
 
+
+
+
+if(!validate()){
 
 toast.error(
-  "Nama, No. WhatsApp, rating, dan saran wajib diisi."
+"Periksa kembali data yang belum lengkap."
 )
 
 return
 
 }
 
-if (!/^08\d{8,11}$/.test(whatsapp)) {
-    toast.error("Masukkan nomor WhatsApp yang valid.")
-    return
-  }
 
 
 
@@ -105,24 +246,37 @@ setLoading(true)
 
 
 
+
+
 const response =
+
 await fetch(
+
 "/api/feedback",
+
 {
 
 method:"POST",
 
 headers:{
+
 "Content-Type":
+
 "application/json"
+
 },
 
 
-body: JSON.stringify({
-  nama,
-  whatsapp,
-  rating,
-  pesan
+body:JSON.stringify({
+
+nama,
+
+whatsapp,
+
+rating,
+
+pesan
+
 })
 
 
@@ -134,22 +288,32 @@ body: JSON.stringify({
 
 
 
+if(!response.ok){
 
-if (!response.ok) {
-  const result = await response.json()
 
-  throw new Error(
-    result.message || "Terjadi kesalahan."
-  )
+const result =
+await response.json()
+
+
+throw new Error(
+
+result.message ||
+
+"Gagal mengirim masukan."
+
+)
+
+
 }
 
 
 
 
 
-
 toast.success(
-  "Terima kasih! Masukan Anda berhasil dikirim."
+
+"Terima kasih! Masukan Anda berhasil dikirim."
+
 )
 
 
@@ -162,20 +326,41 @@ setPesan("")
 setRating(0)
 
 
+setErrors({
+
+nama:"",
+whatsapp:"",
+pesan:"",
+rating:""
+
+})
+
 
 
 
 }
 
-catch (error) {
 
-  toast.error(
-    error instanceof Error
-      ? error.message
-      : "Gagal mengirim masukan."
-  )
+catch(error){
+
+
+toast.error(
+
+error instanceof Error
+
+?
+
+error.message
+
+:
+
+"Gagal mengirim masukan."
+
+)
+
 
 }
+
 
 finally{
 
@@ -196,22 +381,19 @@ setLoading(false)
 
 
 
-return (
 
+
+return (
 
 <section
 
 className="
 relative
-py-2
+py-16
 overflow-hidden
 "
 
 >
-
-
-
-{/* BACKGROUND */}
 
 
 <div
@@ -271,16 +453,14 @@ duration:0.6
 }}
 
 className="
+relative
 container
 mx-auto
 px-4
 max-w-5xl
-relative
 "
 
 >
-
-
 
 
 
@@ -294,7 +474,7 @@ className="
 mx-auto
 max-w-3xl
 text-center
-mb-16
+mb-12
 "
 
 >
@@ -313,9 +493,23 @@ dark:text-green-400
 
 >
 
+
+<MessageSquare
+
+className="
+mr-2
+h-4
+w-4
+"
+
+/>
+
+
 Saran & Masukan
 
+
 </Badge>
+
 
 
 
@@ -334,9 +528,30 @@ mb-4
 
 >
 
-Saran & Masukan
+Bantu Kami Meningkatkan
+
+
+<span
+
+className="
+block
+bg-gradient-to-r
+from-green-600
+via-green-500
+to-red-500
+bg-clip-text
+text-transparent
+"
+
+>
+
+SIHARGA CEPAT
+
+</span>
+
 
 </h2>
+
 
 
 
@@ -352,9 +567,12 @@ text-muted-foreground
 
 >
 
-Berikan Saran & Masukan terkait SIHARGA CEPAT
+Berikan pendapat, kritik, dan saran Anda
+untuk membantu meningkatkan layanan informasi
+harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan.
 
 </p>
+
 
 
 </div>
@@ -390,15 +608,71 @@ duration:0.5
 >
 
 
+
+
+
+{/* INFORMASI FORM */}
+
+<div
+
+className="
+mb-6
+rounded-xl
+border
+bg-muted/40
+p-4
+"
+
+>
+
+
+<p
+
+className="
+font-medium
+"
+
+>
+
+📝 Isi Form Saran & Masukan
+
+</p>
+
+
+<p
+
+className="
+mt-1
+text-sm
+text-muted-foreground
+"
+
+>
+
+Lengkapi data berikut untuk menyampaikan
+masukan Anda terkait layanan SIHARGA CEPAT.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
 <Card
 
 className="
 p-6
 sm:p-10
+bg-background/70
+backdrop-blur
 shadow-lg
-bg-background/60
-backdrop-blur-md
-border-border/50
 "
 
 >
@@ -417,64 +691,300 @@ space-y-6
 
 
 
-{/* RATING */}
 
 
-<div>
+{/* NAMA */}
+
+<div className="space-y-2">
+
+
+<label
+
+className="
+text-sm
+font-medium
+"
+
+>
+
+Nama Lengkap
+
+</label>
+
+
+<Input
+
+disabled={loading}
+
+value={nama}
+
+onChange={(e)=>{
+
+setNama(e.target.value)
+
+setErrors({
+
+...errors,
+
+nama:""
+
+})
+
+}}
+
+placeholder="Masukkan nama Anda"
+
+/>
+
+
+{
+
+errors.nama &&
+
+<p className="text-sm text-red-500">
+
+{errors.nama}
+
+</p>
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* WHATSAPP */}
+
+<div className="space-y-2">
+
+
+<label
+
+className="
+text-sm
+font-medium
+"
+
+>
+
+Nomor WhatsApp
+
+</label>
+
+
+<Input
+
+disabled={loading}
+
+type="tel"
+
+maxLength={12}
+
+value={whatsapp}
+
+onChange={(e)=>{
+
+const value = e.target.value
+.replace(/[^0-9]/g,"")
+.slice(0,12)
+
+
+setWhatsapp(value)
+
+
+setErrors({
+
+...errors,
+
+whatsapp:""
+
+})
+
+}}
+
+placeholder="Contoh: 081200000000"
+
+/>
+
 
 
 <p
 
 className="
-font-medium
-mb-3
+text-xs
+text-muted-foreground
 "
 
 >
 
-Bagaimana tingkat kepuasan Anda?
+Nomor WhatsApp aktif diperlukan apabila diperlukan tindak lanjut.
 
 </p>
 
 
 
+{
 
-<div
+errors.whatsapp &&
+
+<p className="text-sm text-red-500">
+
+{errors.whatsapp}
+
+</p>
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* PESAN */}
+
+<div className="space-y-2">
+
+
+<label
 
 className="
-flex
-gap-2
+text-sm
+font-medium
 "
 
 >
 
+Saran atau Masukan
+
+</label>
+
+
+<Textarea
+
+disabled={loading}
+
+value={pesan}
+
+onChange={(e)=>{
+
+setPesan(e.target.value)
+
+setErrors({
+
+...errors,
+
+pesan:""
+
+})
+
+}}
+
+placeholder="Tuliskan kritik, saran, atau pengalaman Anda."
+
+rows={5}
+
+/>
+
+
 
 {
 
-[1,2,3,4,5].map(
+errors.pesan &&
 
-(item)=>(
+<p className="text-sm text-red-500">
+
+{errors.pesan}
+
+</p>
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* RATING */}
+
+<div>
+
+
+<label
+
+className="
+text-sm
+font-medium
+block
+mb-3
+"
+
+>
+
+Tingkat Kepuasan Layanan
+
+</label>
+
+
+<div className="flex gap-2">
+
+
+{
+
+[1,2,3,4,5].map((item)=>(
 
 
 <button
-  key={item}
-  type="button"
-  disabled={loading}
-  onClick={() => setRating(item)}
-  className="
-    transition-transform
-    hover:scale-110
-    disabled:cursor-not-allowed
-    disabled:opacity-60
-  "
+
+key={item}
+
+type="button"
+
+disabled={loading}
+
+onClick={()=>{
+
+setRating(item)
+
+setErrors({
+
+...errors,
+
+rating:""
+
+})
+
+}}
+
 >
 
 
 <Star
 
 className={`
-w-8
+
 h-8
+
+w-8
+
 transition
 
 ${
@@ -498,9 +1008,27 @@ item <= rating
 </button>
 
 
-)
+))
 
-)
+
+}
+
+
+</div>
+
+
+
+
+
+{
+
+errors.rating &&
+
+<p className="mt-2 text-sm text-red-500">
+
+{errors.rating}
+
+</p>
 
 }
 
@@ -510,105 +1038,98 @@ item <= rating
 
 
 
+{/* HONEYPOT ANTI SPAM */}
+
+<div
+className="
+hidden
+"
+>
+
+<Input
+
+tabIndex={-1}
+
+autoComplete="off"
+
+value={website}
+
+onChange={(e)=>
+setWebsite(e.target.value)
+}
+
+placeholder="Website"
+
+/>
+
 </div>
 
 
 
 
 
-
-
-
-
-
-{/* NAMA */}
-
-
-<Input
-  disabled={loading}
-  value={nama}
-  onChange={(e) => setNama(e.target.value)}
-  placeholder="Masukkan nama anda"
-/>
-
-
-
-
-
-
-
-
-
-{/* EMAIL */}
-
-
-<Input
-  disabled={loading}
-  type="tel"
-  value={whatsapp}
-  onChange={(e) =>
-    setWhatsapp(e.target.value.replace(/[^0-9]/g, ""))
-  }
-  placeholder="Masukkan Nomor Whatsapp contoh: 081200000000"
-/>
-
-
-
-
-
-
-
-
-
-{/* PESAN */}
-
-
-<Textarea
-  disabled={loading}
-  value={pesan}
-  onChange={(e) => setPesan(e.target.value)}
-  placeholder="Tuliskan kritik, saran, atau pengalaman Anda menggunakan SIHARGA CEPAT."
-  rows={5}
-/>
-
-
-
-
-
-
-
-
-{/* BUTTON */}
-
-
 <Button
-  onClick={handleSubmit}
-  disabled={loading}
-  className="
-    w-full
-    sm:w-auto
-    bg-green-600
-    hover:bg-green-700
-    transition-all
-    duration-300
-    disabled:opacity-70
-    disabled:cursor-not-allowed
-  "
+
+onClick={handleSubmit}
+
+disabled={loading}
+
+className="
+w-full
+sm:w-auto
+bg-green-600
+hover:bg-green-700
+"
+
 >
-  {loading ? (
-    <>
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      Mengirim...
-    </>
-  ) : (
-    <>
-      <Send className="mr-2 h-4 w-4" />
-      Kirim Masukan
-    </>
-  )}
+
+
+{
+
+loading
+
+?
+
+<>
+
+<Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+
+Mengirim...
+
+</>
+
+:
+
+<>
+
+<Send className="mr-2 h-4 w-4"/>
+
+Kirim Masukan
+
+</>
+
+}
+
+
+
 </Button>
 
 
+
+
+
+<p
+
+className="
+text-xs
+text-muted-foreground
+"
+
+>
+
+Dengan mengirimkan masukan, Anda membantu kami meningkatkan kualitas layanan SIHARGA CEPAT.
+
+</p>
 
 
 
@@ -621,22 +1142,22 @@ item <= rating
 
 
 
-</motion.div>
-
-
-
 
 
 </motion.div>
 
 
+
+
+
+
+</motion.div>
 
 
 </section>
 
 
 )
-
 
 
 }

@@ -777,354 +777,282 @@ success:true
 
 export async function getLandingStats() {
 
-  const supabase = await createClient()
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const supabase =
+    await createClient()
 
-  const sevenDaysAgo = new Date(today)
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6)
 
-  // Pengunjung hari ini
-  const { count: todayVisitor } = await supabase
-    .from("website_visits")
-    .select("*", {
-      count: "exact",
-      head: true,
-    })
-    .gte("created_at", today.toISOString())
 
-  // Pengunjung 7 hari terakhir
-  const { count: weekVisitor } = await supabase
-    .from("website_visits")
-    .select("*", {
-      count: "exact",
-      head: true,
-    })
-    .gte("created_at", sevenDaysAgo.toISOString())
 
-  // Total pengunjung
-  const { count: totalVisitor } = await supabase
-    .from("website_visits")
-    .select("*", {
-      count: "exact",
-      head: true,
-    })
 
-  // Rating
-  const { data: feedback } = await supabase
-    .from("feedback")
-    .select("rating")
+  // ==============================
+  // TANGGAL
+  // ==============================
 
-  const averageRating =
-    feedback && feedback.length > 0
-      ? feedback.reduce(
-          (sum, item) => sum + item.rating,
-          0
-        ) / feedback.length
-      : 0
 
-  return {
-    todayVisitor: todayVisitor ?? 0,
-    weekVisitor: weekVisitor ?? 0,
-    totalVisitor: totalVisitor ?? 0,
-    averageRating: Number(
-      averageRating.toFixed(1)
-    ),
+  const today =
+    new Date()
+
+
+  const todayString =
+    today
+      .toISOString()
+      .split("T")[0]
+
+
+
+
+  const sevenDaysAgo =
+    new Date(today)
+
+
+  sevenDaysAgo.setDate(
+    sevenDaysAgo.getDate() - 6
+  )
+
+
+
+  const sevenDaysString =
+    sevenDaysAgo
+      .toISOString()
+      .split("T")[0]
+
+
+
+
+
+
+
+
+  // ==============================
+  // AMBIL DATA VISITOR
+  // ==============================
+
+
+  const {
+    data: visits,
+    error: visitError
+  } = await supabase
+
+  .from("website_visits")
+
+  .select(
+    "session_id, visit_date"
+  )
+
+
+
+
+
+
+
+  if(visitError){
+
+    console.error(
+      "VISITOR STAT ERROR:",
+      visitError
+    )
+
   }
 
+
+
+
+
+
+
+
+
+  // ==============================
+  // HITUNG UNIQUE VISITOR
+  // ==============================
+
+
+  const todayVisitor =
+    new Set<string>()
+
+
+
+  const weekVisitor =
+    new Set<string>()
+
+
+
+  const totalVisitor =
+    new Set<string>()
+
+
+
+
+
+
+  visits?.forEach((item)=>{
+
+
+    if(!item.session_id){
+
+      return
+
+    }
+
+
+
+
+    // TOTAL SEMUA WAKTU
+
+    totalVisitor.add(
+      item.session_id
+    )
+
+
+
+
+
+
+
+    // HARI INI
+
+    if(
+      item.visit_date === todayString
+    ){
+
+      todayVisitor.add(
+        item.session_id
+      )
+
+    }
+
+
+
+
+
+
+
+    // 7 HARI TERAKHIR
+
+    if(
+      item.visit_date >= sevenDaysString
+      &&
+      item.visit_date <= todayString
+    ){
+
+      weekVisitor.add(
+        item.session_id
+      )
+
+    }
+
+
+
+
+  })
+
+
+
+
+
+
+
+
+
+  // ==============================
+  // RATING
+  // ==============================
+
+
+  const {
+    data:feedback
+  } =
+  await supabase
+
+  .from("feedback")
+
+  .select(
+    "rating"
+  )
+
+
+
+
+
+
+
+  let averageRating = 0
+
+
+
+
+
+
+  if(
+    feedback &&
+    feedback.length > 0
+  ){
+
+
+    averageRating =
+
+      feedback.reduce(
+
+        (
+          total,
+          item
+        ) =>
+
+        total +
+        Number(item.rating),
+
+        0
+
+      )
+
+      /
+
+      feedback.length
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+  // ==============================
+  // RETURN
+  // ==============================
+
+
+  return {
+
+
+    todayVisitor:
+      todayVisitor.size,
+
+
+
+    weekVisitor:
+      weekVisitor.size,
+
+
+
+    totalVisitor:
+      totalVisitor.size,
+
+
+
+    averageRating:
+      Number(
+        averageRating.toFixed(1)
+      )
+
+
+  }
+
+
+
 }
-
-// export async function recordVisitor(){
-
-//   const supabase =
-//     await createClient();
-
-
-
-//   const today =
-//     new Date()
-//       .toISOString()
-//       .split("T")[0];
-
-
-
-
-//   const {
-
-//     data
-
-//   } = await supabase
-
-
-//     .from("visitor_statistics")
-
-
-//     .select(`
-
-//       id,
-
-//       jumlah
-
-//     `)
-
-
-//     .eq(
-//       "tanggal",
-//       today
-//     )
-
-
-//     .maybeSingle();
-
-
-
-
-
-
-//   if(data){
-
-
-//     await supabase
-
-
-//       .from("visitor_statistics")
-
-
-//       .update({
-
-//         jumlah:
-//           data.jumlah + 1
-
-//       })
-
-
-//       .eq(
-
-//         "id",
-
-//         data.id
-
-//       );
-
-
-
-//     return {
-
-//       success:true
-
-//     };
-
-
-//   }
-
-
-
-
-
-
-//   await supabase
-
-
-//     .from("visitor_statistics")
-
-
-//     .insert({
-
-//       tanggal:today,
-
-//       jumlah:1
-
-//     });
-
-
-
-
-
-//   return {
-
-//     success:true
-
-//   };
-
-
-// }
-
-// export async function getVisitorStats(){
-
-//   const supabase =
-//   await createClient();
-
-
-//   const {
-//     data,
-//     error
-//   } =
-//   await supabase
-
-//   .from("visitor_statistics")
-
-//   .select(
-//     `
-//     id,
-//     tanggal,
-//     jumlah
-//     `
-//   )
-
-//   .order(
-//     "tanggal",
-//     {
-//       ascending:false
-//     }
-//   );
-
-
-
-//   if(error){
-
-//     console.error(
-//       "GET VISITOR STATS ERROR:",
-//       error
-//     );
-
-
-//     return {
-
-//       todayVisitor:0,
-
-//       weekVisitor:0,
-
-//       totalVisitor:0,
-
-//       averageRating:0
-
-//     };
-
-//   }
-
-
-
-
-//   console.log(
-//     "VISITOR DATA:",
-//     data
-//   );
-
-
-
-
-
-//   const today =
-//   new Date()
-//   .toISOString()
-//   .split("T")[0];
-
-
-
-
-
-//   const sevenDaysAgo =
-//   new Date();
-
-
-//   sevenDaysAgo.setDate(
-//     sevenDaysAgo.getDate()-6
-//   );
-
-
-//   const startDate =
-//   sevenDaysAgo
-//   .toISOString()
-//   .split("T")[0];
-
-
-
-
-
-
-//   const todayVisitor =
-
-//   data
-
-//   ?.filter(
-//     item =>
-//     item.tanggal === today
-//   )
-
-//   .reduce(
-//     (sum,item)=>
-//     sum + item.jumlah,
-//     0
-//   )
-
-//   ??
-//   0;
-
-
-
-
-
-
-
-//   const weekVisitor =
-
-//   data
-
-//   ?.filter(
-//     item =>
-//     item.tanggal >= startDate
-//   )
-
-//   .reduce(
-//     (sum,item)=>
-//     sum + item.jumlah,
-//     0
-//   )
-
-//   ??
-//   0;
-
-
-
-
-
-
-
-//   const totalVisitor =
-
-//   data
-
-//   ?.reduce(
-//     (sum,item)=>
-//     sum + item.jumlah,
-//     0
-//   )
-
-//   ??
-//   0;
-
-
-
-
-
-
-//   return {
-
-
-//     todayVisitor,
-
-
-//     weekVisitor,
-
-
-//     totalVisitor,
-
-
-//     averageRating:0
-
-
-//   };
-
-
-// }
