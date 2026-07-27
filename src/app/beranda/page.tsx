@@ -128,7 +128,7 @@ title:
 
 
 description:
-"Pantau perkembangan harga barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan melalui SIHARGA CEPAT.",
+"Pantau perkembangan harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan melalui SIHARGA CEPAT.",
 
 
 
