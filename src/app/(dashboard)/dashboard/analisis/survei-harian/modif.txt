@@ -1,0 +1,20 @@
+dashboard
+└── analis
+    └── survei-harian
+        ├── components
+        │   ├── action-cell.tsx      ← modifikasi
+        │   ├── status-badge.tsx     ← copy
+        │   ├── survei-content.tsx   ← copy
+        │   ├── survei-filter.tsx    ← copy
+        │   ├── survei-summary.tsx   ← copy
+        │   └── survei-table.tsx     ← copy
+        │
+        ├── [id]
+        │   ├── actions.ts           ← modifikasi
+        │   ├── page.tsx             ← copy
+        │   └── components
+        │       └── detail-actions.tsx ← modifikasi
+        │
+        ├── actions.ts               ← modifikasi
+        ├── columns.tsx              ← modifikasi
+        └── page.tsx                 ← copy

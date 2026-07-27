@@ -1,0 +1,85 @@
+Ini sudah sesuai konsep monitoring harga bapok karena:
+
+harian untuk melihat fluktuasi,
+mingguan untuk analisis tren,
+bulanan untuk laporan/perbandingan.
+
+
+Menurut saya roadmap terbaik sekarang adalah:
+
+Fase 1 (UI Publik) ✅ Selesai
+
+Landing
+Harga
+Publikasi
+
+Fase 2 (Database)
+
+Struktur Supabase
+Relasi tabel
+Storage
+RLS
+
+Fase 3 (Admin)
+
+Login
+Dashboard
+Input Harga
+Publikasi
+User
+
+Fase 4 (Monitoring)
+
+Grafik
+Analisis
+Laporan otomatis
+
+Fase 5 (Produksi)
+
+SEO
+Analytics
+Backup
+Optimasi
+Deploy
+
+
+
+password supabase
+$7iE8fn$Ea@85P+
+
+
+
+FASE 1
+=========================
+✔ Landing
+✔ Harga
+✔ Publikasi
+
+FASE 2
+=========================
+✔ Database
+
+FASE 3
+=========================
+1️⃣ Dashboard Layout
+2️⃣ Role Management
+3️⃣ Dashboard Admin
+4️⃣ CRUD Master Data
+5️⃣ Survei Harian
+6️⃣ Input Harga
+
+FASE 4
+=========================
+Analisis
+
+FASE 5
+=========================
+Publikasi otomatis
+
+FASE 6
+=========================
+Monitoring Kabid
+
+FASE 7
+=========================
+Persetujuan Kadis
