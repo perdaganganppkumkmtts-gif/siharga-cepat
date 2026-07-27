@@ -1,96 +1,404 @@
 "use client"
 
-import { ArrowRight, TrendingUp, Package, Github } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 
-export function CTASection() {
-  return (
-    <section className='py-16 lg:py-24 bg-muted/80'>
-      <div className='container mx-auto px-4 lg:px-8'>
-        <div className='mx-auto max-w-4xl'>
-          <div className='text-center'>
-            <div className='space-y-8'>
-              {/* Badge and Stats */}
-              <div className='flex flex-col items-center gap-4'>
-                <Badge variant='outline' className='flex items-center gap-2'>
-                  <TrendingUp className='size-3' />
-                  Productivity Suite
-                </Badge>
+import Link from "next/link"
 
-                <div className='text-muted-foreground flex items-center gap-4 text-sm'>
-                  <span className='flex items-center gap-1'>
-                    <div className='size-2 rounded-full bg-green-500' />
-                    150+ Blocks
-                  </span>
-                  <Separator orientation='vertical' className='!h-4' />
-                  <span>25K+ Downloads</span>
-                  <Separator orientation='vertical' className='!h-4' />
-                  <span>4.9★ Rating</span>
-                </div>
-              </div>
 
-              {/* Main Content */}
-              <div className='space-y-6'>
-                <h1 className='text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl'>
-                  Supercharge your team&apos;s
-                  <span className='flex sm:inline-flex justify-center'>
-                    <span className='relative mx-2'>
-                      <span className='bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent'>
-                        performance
-                      </span>
-                      <div className='absolute start-0 -bottom-2 h-1 w-full bg-gradient-to-r from-primary/30 to-secondary/30' />
-                    </span>
-                    today
-                  </span>
-                </h1>
+import {
+  ArrowRight,
+  Search,
+  FileText
+} from "lucide-react"
 
-                <p className='text-muted-foreground mx-auto max-w-2xl text-balance lg:text-xl'>
-                  Stop building from scratch. Get production-ready components, templates and dashboards
-                  that integrate seamlessly with your shadcn/ui projects.
-                </p>
-              </div>
 
-              {/* CTA Buttons */}
-              <div className='flex flex-col justify-center gap-4 sm:flex-row sm:gap-6'>
-                <Button size='lg' className='cursor-pointer px-8 py-6 text-lg font-medium' asChild>
-                  <a href='https://shadcnstore.com/blocks' target='_blank' rel='noopener noreferrer'>
-                    <Package className='me-2 size-5' />
-                    Browse Components
-                  </a>
-                </Button>
-                <Button variant='outline' size='lg' className='cursor-pointer px-8 py-6 text-lg font-medium group' asChild>
-                  <a href='https://github.com/silicondeck/shadcn-dashboard-landing-template' target='_blank' rel='noopener noreferrer'>
-                    <Github className='me-2 size-5' />
-                    View on GitHub
-                    <ArrowRight className='ms-2 size-4 transition-transform group-hover:translate-x-1' />
-                  </a>
-                </Button>
-              </div>
+import {
+  Button
+} from "@/components/ui/button"
 
-              {/* Trust Indicators */}
-              <div className='text-muted-foreground flex flex-wrap items-center justify-center gap-6 text-sm'>
-                <div className='flex items-center gap-2'>
-                    <div className='size-2 rounded-full bg-green-600 dark:bg-green-400 me-1' />
 
-                  <span>Free components available</span>
-                </div>
-                <div className='flex items-center gap-2'>
-                    <div className='size-2 rounded-full bg-blue-600 dark:bg-blue-400 me-1' />
+import {
+  DotPattern
+} from "@/components/dot-pattern"
 
-                  <span>Commercial license included</span>
-                </div>
-                <div className='flex items-center gap-2'>
-                    <div className='size-2 rounded-full bg-purple-600 dark:bg-purple-400 me-1' />
 
-                  <span>Regular updates & support</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+
+
+
+
+
+export function CTASection(){
+
+
+
+
+
+return (
+
+
+
+<section
+
+id="cta"
+
+aria-label="Akses layanan SIHARGA CEPAT"
+
+className="
+relative
+overflow-hidden
+py-16
+sm:py-20
+"
+
+>
+
+
+
+
+
+
+
+{/* BACKGROUND */}
+
+
+<div
+
+className="
+absolute
+inset-0
+bg-gradient-to-r
+from-green-600/10
+via-background
+to-red-500/10
+"
+
+/>
+
+
+
+
+
+
+<DotPattern
+
+className="
+absolute
+inset-0
+opacity-40
+"
+
+size="md"
+
+fadeStyle="ellipse"
+
+/>
+
+
+
+
+
+
+
+
+
+<div
+
+className="
+relative
+container
+mx-auto
+px-4
+sm:px-6
+lg:px-8
+"
+
+>
+
+
+
+
+
+
+
+
+<div
+
+className="
+mx-auto
+max-w-4xl
+rounded-3xl
+border
+bg-background/70
+backdrop-blur-md
+p-8
+text-center
+shadow-lg
+sm:p-12
+"
+
+>
+
+
+
+
+
+
+
+
+
+<h2
+
+className="
+text-3xl
+font-bold
+tracking-tight
+sm:text-4xl
+"
+
+>
+
+
+Pantau Harga Barang Kebutuhan Pokok
+Kabupaten Timor Tengah Selatan
+
+
+</h2>
+
+
+
+
+
+
+
+
+<p
+
+className="
+mx-auto
+mt-5
+max-w-2xl
+text-muted-foreground
+text-lg
+"
+
+>
+
+
+Akses informasi harga bapok terbaru melalui
+SIHARGA CEPAT
+(Sistem Informasi Harga Barang Kebutuhan Pokok Cepat dan Terpadu)
+untuk mendukung transparansi informasi harga pasar masyarakat.
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div
+
+className="
+mt-8
+flex
+flex-col
+justify-center
+gap-4
+sm:flex-row
+"
+
+>
+
+
+
+
+
+
+
+
+
+<Button
+
+size="lg"
+
+className="
+bg-green-600
+hover:bg-green-700
+shadow-lg
+"
+
+asChild
+
+>
+
+
+<Link
+
+href="/harga"
+
+>
+
+
+<Search
+
+className="
+mr-2
+h-5
+w-5
+"
+
+/>
+
+
+Lihat Harga Hari Ini
+
+
+
+
+<ArrowRight
+
+className="
+ml-2
+h-4
+w-4
+"
+
+/>
+
+
+</Link>
+
+
+</Button>
+
+
+
+
+
+
+
+
+
+<Button
+
+size="lg"
+
+variant="outline"
+
+asChild
+
+>
+
+
+<Link
+
+href="/publikasi"
+
+>
+
+
+<FileText
+
+className="
+mr-2
+h-5
+w-5
+"
+
+/>
+
+
+Lihat Publikasi Laporan
+
+
+
+</Link>
+
+
+</Button>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* SEO TEXT */}
+
+
+<p
+
+className="
+mt-8
+text-sm
+text-muted-foreground
+"
+
+>
+
+
+Data harga bersumber dari pemantauan komoditas
+barang kebutuhan pokok di wilayah Kabupaten Timor Tengah Selatan,
+termasuk pantauan pasar seperti Pasar Inpres Soe.
+
+
+</p>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</section>
+
+
+
+)
+
 }

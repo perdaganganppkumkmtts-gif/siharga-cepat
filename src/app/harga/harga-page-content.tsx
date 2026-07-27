@@ -1,13 +1,12 @@
 "use client"
 
 import {
-  useState
-} from "react"
-
-
-import {
-  BarChart3
+  BarChart3,
+  FileText
 } from "lucide-react"
+
+
+import Link from "next/link"
 
 
 import {
@@ -49,6 +48,8 @@ import {
 
 
 
+
+
 interface Props {
 
   summary:any
@@ -66,7 +67,11 @@ interface Props {
 
 
 
+
+
+
 export function HargaPageContent({
+
 
   summary,
 
@@ -76,9 +81,8 @@ export function HargaPageContent({
 
   commodities
 
+
 }:Props){
-
-
 
 
 
@@ -86,14 +90,28 @@ export function HargaPageContent({
 
 return (
 
-<div className="min-h-screen bg-background">
+
+<div
+
+className="
+min-h-screen
+bg-background
+"
+
+>
 
 
 <LandingNavbar />
 
 
 
+
+
+
+
 <main>
+
+
 
 
 
@@ -109,6 +127,8 @@ to-red-500/10
 "
 
 >
+
+
 
 
 
@@ -130,11 +150,26 @@ fadeStyle="ellipse"
 
 
 
-<div className="relative">
 
 
 
-{/* HEADER */}
+
+<div
+
+className="
+relative
+"
+
+>
+
+
+
+
+
+
+{/* =========================
+HERO SEO
+========================= */}
 
 
 <section
@@ -157,6 +192,10 @@ text-center
 "
 
 >
+
+
+
+
 
 
 <Badge
@@ -184,11 +223,13 @@ w-4
 />
 
 
-Informasi Harga
+Monitoring Harga Pasar Inpres SoE
 
 
 
 </Badge>
+
+
 
 
 
@@ -208,7 +249,7 @@ sm:text-5xl
 >
 
 
-Informasi Harga
+Harga Barang Kebutuhan Pokok
 
 
 <span
@@ -226,13 +267,15 @@ text-transparent
 >
 
 
-Barang Kebutuhan Pokok
+Kabupaten Timor Tengah Selatan
 
 
 </span>
 
 
 </h1>
+
+
 
 
 
@@ -252,11 +295,18 @@ text-muted-foreground
 >
 
 
-Pantau perkembangan harga barang kebutuhan pokok
-dan barang penting Kabupaten Timor Tengah Selatan, berdasarkan harga di Pasar Inpres SoE.
+Pantau perkembangan harga barang kebutuhan pokok dan barang penting
+Kabupaten Timor Tengah Selatan melalui SIHARGA CEPAT.
+Data harga bersumber dari pemantauan komoditas di
+Pasar Inpres SoE untuk menyediakan informasi harga yang cepat,
+akurat, transparan, dan mudah diakses masyarakat.
+
 
 
 </p>
+
+
+
 
 
 
@@ -271,7 +321,11 @@ dan barang penting Kabupaten Timor Tengah Selatan, berdasarkan harga di Pasar In
 
 
 
-{/* CONTENT */}
+
+
+{/* =========================
+CONTENT
+========================= */}
 
 
 <section
@@ -279,9 +333,9 @@ dan barang penting Kabupaten Timor Tengah Selatan, berdasarkan harga di Pasar In
 className="
 container
 mx-auto
+space-y-10
 px-4
 pb-20
-space-y-10
 "
 
 >
@@ -294,11 +348,94 @@ space-y-10
 
 
 
-{/* RANKING */}
+
+{/* DESKRIPSI SEO */}
+
+
+<section
+
+className="
+rounded-xl
+border
+bg-background/70
+p-6
+"
+
+>
+
+
+<h2
+
+className="
+text-xl
+font-semibold
+"
+
+>
+
+Monitoring Harga Bapok Pasar Inpres SoE
+
+
+</h2>
+
+
+
+
+
+<p
+
+className="
+mt-3
+text-sm
+leading-relaxed
+text-muted-foreground
+"
+
+>
+
+
+SIHARGA CEPAT menyajikan informasi perkembangan harga
+beras, cabai, bawang, telur, minyak goreng, dan komoditas
+barang kebutuhan pokok lainnya di Kabupaten Timor Tengah Selatan.
+Data ini digunakan untuk membantu masyarakat, pelaku usaha,
+dan pemerintah daerah dalam memantau perubahan harga pasar.
+
+
+
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+{/* =========================
+RANKING
+========================= */}
 
 
 
 <Card>
+
+
+<CardHeader>
+
+
+<CardTitle>
+
+Perubahan Harga Komoditas Minggu Terakhir
+
+
+</CardTitle>
+
+
+</CardHeader>
 
 
 
@@ -320,16 +457,22 @@ md:grid-cols-2
 
 <CommodityRanking
 
+
 title="
-Harga Bapok Naik Seminggu Terakhir
+Harga Bapok Mengalami Kenaikan
 "
 
+
 data={
+
 ranking?.naik ?? []
+
 }
 
 
 />
+
+
 
 
 
@@ -337,16 +480,23 @@ ranking?.naik ?? []
 
 <CommodityRanking
 
+
 title="
-Harga Bapok Turun Seminggu Terakhir
+Harga Bapok Mengalami Penurunan
 "
 
+
 data={
+
 ranking?.turun ?? []
+
 }
 
 
 />
+
+
+
 
 
 </div>
@@ -365,30 +515,51 @@ ranking?.turun ?? []
 
 
 
-{/* GRAFIK */}
+
+
+
+
+
+{/* =========================
+CHART
+========================= */}
+
+
+
 
 <Card>
 
+
 <CardHeader>
+
 
 <CardTitle>
 
 Perkembangan Harga Bapok Pasar Inpres SoE
 
+
 </CardTitle>
+
 
 </CardHeader>
 
 
+
+
+
 <CardContent>
+
+
 
 <PriceAnalysisChart
 
-commodities={
-commodities
-}
+
+commodities={commodities}
+
 
 />
+
+
 
 </CardContent>
 
@@ -401,7 +572,143 @@ commodities
 
 
 
+
+
+
+
+
+
+
+{/* =========================
+CTA PUBLIKASI
+========================= */}
+
+
+
+
+
+<Card>
+
+
+<CardContent
+
+className="
+p-8
+text-center
+"
+
+>
+
+
+<FileText
+
+className="
+mx-auto
+mb-4
+h-10
+w-10
+text-green-600
+"
+
+/>
+
+
+
+
+
+<h2
+
+className="
+text-xl
+font-semibold
+"
+
+>
+
+
+Laporan Analisis Harga Barang Kebutuhan Pokok
+
+
+</h2>
+
+
+
+
+
+
+<p
+
+className="
+mx-auto
+mt-3
+max-w-xl
+text-sm
+text-muted-foreground
+"
+
+>
+
+
+Lihat laporan perkembangan harga dan analisis komoditas
+Kabupaten Timor Tengah Selatan melalui halaman publikasi
+SIHARGA CEPAT.
+
+
+</p>
+
+
+
+
+
+
+
+<Link
+
+href="/publikasi"
+
+className="
+mt-5
+inline-flex
+rounded-md
+bg-green-600
+px-5
+py-2
+text-sm
+font-medium
+text-white
+transition
+hover:bg-green-700
+"
+
+>
+
+
+Lihat Publikasi
+
+
+</Link>
+
+
+
+
+
+</CardContent>
+
+
+</Card>
+
+
+
+
+
+
+
+
+
 </section>
+
+
+
 
 
 
@@ -410,7 +717,12 @@ commodities
 
 
 
+
+
+
 </section>
+
+
 
 
 
@@ -419,11 +731,20 @@ commodities
 
 
 
+
+
+
 <LandingFooter />
+
+
+
 
 
 </div>
 
+
+
 )
+
 
 }

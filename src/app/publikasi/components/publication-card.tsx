@@ -36,6 +36,8 @@ import {
 
 
 
+
+
 interface Publication {
 
 
@@ -163,9 +165,11 @@ item
 
 
 
+
 const isLaporan =
 
 item.jenis === "laporan";
+
 
 
 
@@ -183,11 +187,15 @@ isLaporan
 
 ?
 
+
+
 `/publikasi/${item.slug}/laporan`
 
 
 
 :
+
+
 
 `/publikasi/${item.slug}`;
 
@@ -199,7 +207,20 @@ isLaporan
 
 
 
+
+
+
 return (
+
+
+
+<article
+
+aria-label={item.judul}
+
+>
+
+
 
 
 
@@ -225,10 +246,7 @@ hover:shadow-lg
 
 
 
-
-{/* =========================
-IMAGE
-========================= */}
+{/* IMAGE */}
 
 
 
@@ -260,10 +278,17 @@ item.gambar
 src={item.gambar}
 
 
-alt={item.judul}
+alt={`Cover ${item.judul} - SIHARGA CEPAT`}
 
 
 fill
+
+
+sizes="
+( max-width: 768px ) 100vw,
+( max-width: 1200px ) 50vw,
+33vw
+"
 
 
 className="
@@ -300,6 +325,8 @@ isLaporan
 
 ?
 
+
+
 <FileText
 
 className="h-12 w-12"
@@ -307,7 +334,9 @@ className="h-12 w-12"
 />
 
 
+
 :
+
 
 
 <Newspaper
@@ -317,13 +346,6 @@ className="h-12 w-12"
 />
 
 
-}
-
-
-
-</div>
-
-
 
 }
 
@@ -331,6 +353,13 @@ className="h-12 w-12"
 
 </div>
 
+
+
+}
+
+
+
+</div>
 
 
 
@@ -360,9 +389,7 @@ space-y-4
 
 
 
-{/* =========================
-META
-========================= */}
+{/* META */}
 
 
 
@@ -385,9 +412,7 @@ gap-2
 
 variant="outline"
 
-className="
-gap-1
-"
+className="gap-1"
 
 >
 
@@ -428,14 +453,13 @@ className="h-3 w-3"
 
 
 
-
 {
 
 isLaporan
 
 ?
 
-"Laporan"
+"Laporan Harga"
 
 :
 
@@ -476,6 +500,7 @@ className="h-3 w-3"
 
 
 
+
 {
 
 formatTanggal(
@@ -495,7 +520,6 @@ item.published_at
 
 
 
-
 </div>
 
 
@@ -506,16 +530,11 @@ item.published_at
 
 
 
+{/* TITLE */}
 
 
 
-{/* =========================
-TITLE
-========================= */}
-
-
-
-<h3
+<h2
 
 className="
 font-semibold
@@ -530,7 +549,7 @@ line-clamp-2
 
 
 
-</h3>
+</h2>
 
 
 
@@ -540,12 +559,7 @@ line-clamp-2
 
 
 
-
-
-
-{/* =========================
-SUMMARY
-========================= */}
+{/* SUMMARY */}
 
 
 
@@ -566,7 +580,7 @@ item.ringkasan
 
 ??
 
-"Tidak ada ringkasan publikasi."
+"Tidak tersedia ringkasan publikasi harga barang kebutuhan pokok."
 
 }
 
@@ -582,12 +596,7 @@ item.ringkasan
 
 
 
-
-
-
-{/* =========================
-AUTHOR
-========================= */}
+{/* AUTHOR */}
 
 
 
@@ -606,7 +615,7 @@ text-muted-foreground
 >
 
 
-Oleh:
+Disusun oleh:
 
 
 {" "}
@@ -649,9 +658,8 @@ text-foreground
 
 
 
-{/* =========================
-BUTTON
-========================= */}
+
+{/* DETAIL LINK */}
 
 
 
@@ -669,7 +677,14 @@ className="w-full"
 
 <Link
 
+
 href={detailUrl}
+
+
+title={item.judul}
+
+
+aria-label={`Buka ${item.judul}`}
 
 >
 
@@ -681,7 +696,7 @@ isLaporan
 
 ?
 
-"Lihat Laporan"
+"Lihat Laporan Harga"
 
 :
 
@@ -715,7 +730,13 @@ isLaporan
 
 
 
+
+
 </Card>
+
+
+
+</article>
 
 
 

@@ -18,15 +18,18 @@ import {
 
 export const metadata: Metadata = {
 
-  title:
-    "SIHARGA CEPAT | Informasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan",
+
+title:
+"SIHARGA CEPAT | Informasi Harga Bapok Kabupaten Timor Tengah Selatan",
 
 
-  description:
-    "SIHARGA CEPAT (Sistem Informasi Harga Barang Kebutuhan Pokok Cepat dan Terpadu) menyediakan informasi harga terbaru barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan secara cepat, akurat, transparan, dan mudah diakses masyarakat.",
+
+description:
+"Sistem Informasi Harga Barang Kebutuhan Pokok Cepat dan Terpadu (SIHARGA CEPAT) menyediakan informasi harga pangan, harga bapok, dan perkembangan komoditas Kabupaten Timor Tengah Selatan secara cepat, akurat, transparan, dan mudah diakses masyarakat.",
 
 
-  keywords:[
+
+keywords:[
 
     "SIHARGA CEPAT",
 
@@ -40,133 +43,274 @@ export const metadata: Metadata = {
 
     "harga sembako TTS",
 
+    "harga Pasar Inpres Soe",
+
+    "Pasar Inpres Soe",
+
+    "harga pasar Soe",
+
+    "harga komoditas Soe",
+
     "Dinas Perdagangan TTS",
+
+    "Dinas ppk dan umkm TTS",
 
     "harga barang kebutuhan pokok",
 
     "harga barang penting"
 
-  ],
-
-
-  authors:[
-
-    {
-
-      name:
-      "Dinas Perdagangan, Perindustrian, Koperasi dan UMKM Kabupaten Timor Tengah Selatan"
-
-    }
-
-  ],
-
-
-  creator:
-    "Dinas Perdagangan, Perindustrian, Koperasi dan UMKM Kabupaten Timor Tengah Selatan",
-
-
-  publisher:
-    "SIHARGA CEPAT",
+],
 
 
 
-  openGraph:{
 
+authors:[
 
-    title:
-      "SIHARGA CEPAT | Informasi Harga Bapok Kabupaten Timor Tengah Selatan",
+{
 
+name:
+"Dinas Perdagangan, Perindustrian, Koperasi dan UMKM Kabupaten Timor Tengah Selatan"
 
+}
 
-    description:
-      "Pantau perkembangan harga barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan melalui SIHARGA CEPAT.",
-
-
-
-    type:
-      "website",
+],
 
 
 
-    locale:
-      "id_ID",
+
+creator:
+
+"Dinas Perdagangan, Perindustrian, Koperasi dan UMKM Kabupaten Timor Tengah Selatan",
 
 
 
-    siteName:
-      "SIHARGA CEPAT",
+
+publisher:
+
+"SIHARGA CEPAT",
 
 
 
-    images:[
-
-      {
-
-        url:
-          "/siharga-light.svg",
-
-        width:
-          1200,
-
-        height:
-          630,
 
 
-        alt:
-          "SIHARGA CEPAT Kabupaten Timor Tengah Selatan"
+category:
 
-      }
-
-    ]
-
-  },
+"Informasi Harga Barang Kebutuhan Pokok",
 
 
 
-  twitter:{
 
 
-    card:
-      "summary_large_image",
+alternates:{
 
 
+canonical:
 
-    title:
-      "SIHARGA CEPAT | Informasi Harga Bapok TTS",
+"https://siharga-cepat.vercel.app/beranda"
 
 
-
-    description:
-      "Sistem informasi monitoring harga barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan.",
+},
 
 
 
-    images:[
-
-      "/siharga-light.svg"
-
-    ]
-
-  },
 
 
 
-  robots:{
+
+openGraph:{
 
 
-    index:true,
 
-    follow:true
+title:
+"SIHARGA CEPAT | Informasi Harga Bapok TTS",
 
-  }
+
+
+
+description:
+"Pantau perkembangan harga barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan melalui SIHARGA CEPAT.",
+
+
+
+
+url:
+"https://siharga-cepat.vercel.app/beranda",
+
+
+
+
+siteName:
+"SIHARGA CEPAT",
+
+
+
+
+locale:
+"id_ID",
+
+
+
+
+type:
+"website",
+
+
+
+
+images:[
+
+{
+
+url:
+"/seo-image.png",
+
+width:
+1200,
+
+height:
+630,
+
+alt:
+"SIHARGA CEPAT - Sistem Informasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan"
+
+}
+
+]
+
+},
+
+
+
+
+
+
+
+twitter:{
+
+
+
+card:
+"summary_large_image",
+
+
+
+
+title:
+"SIHARGA CEPAT | Informasi Harga Bapok TTS",
+
+
+
+
+description:
+"Pantau harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan secara cepat dan transparan.",
+
+
+
+
+images:[
+
+"/seo-image.png"
+
+]
+
+
+},
+
+
+
+
+
+
+
+robots:{
+
+
+index:true,
+
+follow:true
+
+
+}
+
+
 
 };
 
 
+function WebsiteSchema(){
+
+
+return (
+
+<script
+
+type="application/ld+json"
+
+dangerouslySetInnerHTML={{
+
+
+__html:
+
+JSON.stringify({
+
+"@context":
+
+"https://schema.org",
 
 
 
+"@type":
 
+"WebSite",
+
+
+
+name:
+
+"SIHARGA CEPAT",
+
+
+
+url:
+
+"https://siharga-cepat.vercel.app",
+
+
+
+description:
+
+"Sistem Informasi Harga Barang Kebutuhan Pokok Cepat dan Terpadu Kabupaten Timor Tengah Selatan.",
+
+
+
+publisher:{
+
+
+"@type":
+
+"Organization",
+
+
+name:
+
+"Dinas Perdagangan, Perindustrian, Koperasi dan UMKM Kabupaten Timor Tengah Selatan"
+
+
+}
+
+
+
+})
+
+
+}}
+
+/>
+
+
+)
+
+}
 
 // ==================================================
 // PAGE
@@ -203,33 +347,27 @@ export default async function LandingPage(){
 
 
 
-  return (
+return (
+
+<>
+
+<WebsiteSchema />
 
 
-    <LandingPageContent
+<LandingPageContent
+
+commodities={commodities}
+
+publications={publications}
+
+stats={stats}
+
+/>
 
 
-      commodities={
-        commodities
-      }
+</>
 
-
-
-      publications={
-        publications
-      }
-
-
-
-      stats={
-        stats
-      }
-
-
-    />
-
-
-  );
+);
 
 
 }

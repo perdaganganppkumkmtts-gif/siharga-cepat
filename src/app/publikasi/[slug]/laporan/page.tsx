@@ -128,7 +128,7 @@ const image =
 
 publication.gambar ??
 
-"/logo.png";
+`${process.env.NEXT_PUBLIC_SITE_URL}/seo-image.png`;
 
 
 
@@ -224,6 +224,12 @@ type:
 "article",
 
 
+publishedTime:
+
+publication.published_at,
+
+
+
 images:[
 
 {
@@ -234,11 +240,14 @@ width:1200,
 
 height:630,
 
-alt:publication.judul
+alt:
+
+`${publication.judul} - SIHARGA CEPAT`
 
 }
 
 ]
+
 
 },
 
@@ -303,6 +312,7 @@ __html:
 
 JSON.stringify({
 
+
 "@context":
 
 "https://schema.org",
@@ -329,7 +339,9 @@ publication.ringkasan,
 
 image:
 
-publication.gambar,
+publication.gambar ??
+
+`${process.env.NEXT_PUBLIC_SITE_URL}/seo-image.png`,
 
 
 
@@ -343,7 +355,9 @@ author:{
 
 name:
 
-publication.created_by ?? "SIHARGA CEPAT"
+publication.created_by ??
+
+"SIHARGA CEPAT"
 
 
 },
@@ -361,7 +375,23 @@ publisher:{
 
 name:
 
-"SIHARGA CEPAT"
+"SIHARGA CEPAT",
+
+
+logo:{
+
+
+"@type":
+
+"ImageObject",
+
+
+url:
+
+`${process.env.NEXT_PUBLIC_SITE_URL}/images/siharga-dark.svg`
+
+
+}
 
 
 },
@@ -371,11 +401,113 @@ name:
 
 datePublished:
 
+publication.published_at,
+
+
+
+mainEntityOfPage:{
+
+
+"@type":
+
+"WebPage",
+
+
+"@id":
+
+`${process.env.NEXT_PUBLIC_SITE_URL}/publikasi/${publication.slug}/laporan`
+
+
+}
+
+
+
+})
+
+
+}}
+
+/>
+
+
+)
+
+}
+
+function DatasetSchema({
+
+publication
+
+}:{
+
+publication:any
+
+}){
+
+
+return (
+
+<script
+
+type="application/ld+json"
+
+dangerouslySetInnerHTML={{
+
+
+__html:
+
+JSON.stringify({
+
+
+"@context":
+
+"https://schema.org",
+
+
+
+"@type":
+
+"Dataset",
+
+
+
+name:
+
+publication.judul,
+
+
+
+description:
+
+publication.ringkasan,
+
+
+
+creator:{
+
+
+"@type":
+
+"Organization",
+
+
+name:
+
+"SIHARGA CEPAT"
+
+
+},
+
+
+
+temporalCoverage:
+
 publication.published_at
 
 
 
 })
+
 
 }}
 
@@ -498,9 +630,12 @@ return (
 
 
 <ReportSchema
-
 publication={publication}
+/>
 
+
+<DatasetSchema
+publication={publication}
 />
 
 

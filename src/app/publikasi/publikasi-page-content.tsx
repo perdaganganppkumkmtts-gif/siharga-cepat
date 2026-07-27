@@ -262,9 +262,7 @@ text-center
 
 <Badge
 
-
 variant="outline"
-
 
 className="
 mb-5
@@ -275,12 +273,7 @@ dark:text-green-400
 
 >
 
-
-
-
-
 <Newspaper
-
 
 className="
 mr-2
@@ -290,14 +283,7 @@ w-4
 
 />
 
-
-
-
-
-Publikasi
-
-
-
+Publikasi Harga Bapok
 
 </Badge>
 
@@ -320,16 +306,7 @@ sm:text-5xl
 
 >
 
-
-
-
-
-Informasi dan Publikasi
-
-
-
-
-
+Publikasi Harga Barang Kebutuhan Pokok
 
 
 <span
@@ -346,20 +323,9 @@ text-transparent
 
 >
 
-
-
-
-
-Harga Barang Kebutuhan Pokok
-
-
-
+Kabupaten Timor Tengah Selatan
 
 </span>
-
-
-
-
 
 
 </h1>
@@ -383,18 +349,10 @@ text-muted-foreground
 
 >
 
-
-
-
-
-Akses laporan harga dan berita terbaru
-perkembangan harga barang kebutuhan pokok
-Kabupaten Timor Tengah Selatan.
-
-
-
-
-
+Temukan laporan analisis harga, perkembangan komoditas,
+dan informasi terbaru barang kebutuhan pokok Kabupaten
+Timor Tengah Selatan melalui Sistem Informasi Harga Barang
+Kebutuhan Pokok Cepat dan Terpadu (SIHARGA CEPAT).
 
 </p>
 
@@ -437,7 +395,21 @@ space-y-10
 
 
 
+<div className="sr-only">
 
+<h2>
+Daftar Publikasi Harga Barang Kebutuhan Pokok
+</h2>
+
+
+<p>
+
+Kumpulan laporan harga pangan, komoditas,
+dan perkembangan harga pasar Kabupaten Timor Tengah Selatan.
+
+</p>
+
+</div>
 
 <PublicationFilter
 

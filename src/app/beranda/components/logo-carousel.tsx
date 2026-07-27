@@ -1,18 +1,14 @@
 "use client";
 
-
 import Link from "next/link";
-
 
 import {
   Card
 } from "@/components/ui/card";
 
-
 import {
   Button
 } from "@/components/ui/button";
-
 
 import {
   TrendingDown,
@@ -22,58 +18,37 @@ import {
   ArrowRight
 } from "lucide-react";
 
-
 import {
   DotPattern
 } from "@/components/dot-pattern";
 
 
-
-
-
 interface Commodity {
-
 
   name:string;
 
-
   unit:string;
-
 
   price:number;
 
-
   change:number;
-
 
   percent:number;
 
-
   status:
-  "up"
-  |
-  "down"
-  |
-  "flat";
-
+  | "up"
+  | "down"
+  | "flat";
 
 }
-
-
 
 
 
 interface Props {
 
-
   commodities:Commodity[];
 
-
 }
-
-
-
-
 
 
 
@@ -87,14 +62,13 @@ export function CommoditySection({
 
 
 
-
-
-
-
 return (
 
-
 <section
+
+aria-label="
+Informasi harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan
+"
 
 className="
 relative
@@ -103,9 +77,6 @@ py-2
 "
 
 >
-
-
-{/* BACKGROUND */}
 
 
 <div
@@ -123,8 +94,6 @@ to-red-500/10
 
 
 
-
-
 <DotPattern
 
 className="opacity-50"
@@ -134,10 +103,6 @@ size="md"
 fadeStyle="circle"
 
 />
-
-
-
-
 
 
 
@@ -156,14 +121,7 @@ px-4
 
 
 
-
-
-
-
-
-
 {/* HEADER */}
-
 
 <div
 
@@ -173,9 +131,6 @@ mb-8
 "
 
 >
-
-
-
 
 
 <h2
@@ -189,12 +144,10 @@ sm:text-3xl
 
 >
 
-Informasi Harga Barang Kebutuhan Pokok
+Harga Barang Kebutuhan Pokok
+Kabupaten Timor Tengah Selatan
 
 </h2>
-
-
-
 
 
 
@@ -208,18 +161,26 @@ text-muted-foreground
 
 >
 
-Berdasarkan pantauan di Pasar Inpres Soe Kab. Timor Tengah Selatan
+Informasi perkembangan harga barang kebutuhan pokok
+berdasarkan pemantauan Pasar Inpres Soe,
+Kabupaten Timor Tengah Selatan.
 
-</p><p
+</p>
+
+
+
+
+<p
 
 className="
-mt-3
+mt-2
+text-sm
 text-muted-foreground
 "
 
 >
 
-Satu Minggu Terakhir
+Perubahan harga satu minggu terakhir
 
 </p>
 
@@ -231,17 +192,28 @@ Satu Minggu Terakhir
 
 
 
+{/* SEO TEXT */}
 
+<div
 
+className="
+sr-only
+"
 
+>
+
+SIHARGA CEPAT menyediakan informasi harga barang kebutuhan pokok
+Kabupaten Timor Tengah Selatan seperti beras, gula, minyak goreng,
+cabai, telur dan komoditas lainnya berdasarkan pemantauan harga
+Pasar Inpres Soe.
+
+</div>
 
 
 
 
 
 {/* SLIDER */}
-
-
 
 <div
 
@@ -251,11 +223,6 @@ overflow-hidden
 "
 
 >
-
-
-
-
-
 
 
 <div
@@ -273,10 +240,6 @@ z-10
 "
 
 />
-
-
-
-
 
 
 
@@ -298,12 +261,6 @@ z-10
 
 
 
-
-
-
-
-
-
 <div
 
 className="
@@ -317,7 +274,6 @@ animate-logo-scroll
 
 {
 
-
 [
 
 ...commodities,
@@ -329,9 +285,6 @@ animate-logo-scroll
 .map(
 
 (item,index)=>(
-
-
-
 
 
 <Card
@@ -351,9 +304,6 @@ border-border/50
 >
 
 
-
-
-
 <div
 
 className="
@@ -365,13 +315,7 @@ items-start
 >
 
 
-
-
-
-
-
 <div>
-
 
 
 <p
@@ -383,14 +327,9 @@ text-muted-foreground
 
 >
 
-{item.name}
+Harga {item.name} TTS
 
 </p>
-
-
-
-
-
 
 
 
@@ -405,7 +344,6 @@ font-bold
 >
 
 Rp {item.price.toLocaleString("id-ID")}
-
 
 
 <span
@@ -424,27 +362,12 @@ text-muted-foreground
 </span>
 
 
-
 </p>
-
 
 
 </div>
 
-
-
-
-
-
-
-
-
 <div>
-
-
-
-
-
 
 
 {
@@ -452,7 +375,6 @@ text-muted-foreground
 item.status === "up" &&
 
 (
-
 
 <div
 
@@ -498,13 +420,11 @@ w-4
 
 
 
-
 {
 
 item.status === "down" &&
 
 (
-
 
 <div
 
@@ -548,13 +468,11 @@ w-4
 
 
 
-
 {
 
 item.status === "flat" &&
 
 (
-
 
 <div
 
@@ -593,10 +511,7 @@ w-4
 
 
 
-
-
 </div>
-
 
 
 
@@ -610,8 +525,6 @@ w-4
 
 
 </Card>
-
-
 
 
 
@@ -630,15 +543,7 @@ w-4
 
 
 
-
-
 </div>
-
-
-
-
-
-
 
 
 
@@ -661,8 +566,6 @@ text-center
 >
 
 
-
-
 <Button
 
 size="lg"
@@ -681,29 +584,43 @@ asChild
 
 
 <Link
+
 href="/harga"
+
+aria-label="
+Lihat harga barang kebutuhan pokok hari ini
+"
+
 >
 
 
 <Search
+
 className="
 mr-2
 h-5
 w-5
 "
+
 />
+
 
 
 Lihat Harga Hari Ini
 
 
+
+
 <ArrowRight
+
 className="
 ml-2
 h-4
 w-4
 "
+
 />
+
 
 
 </Link>
@@ -713,9 +630,6 @@ w-4
 
 
 
-
-
-
 </div>
 
 
@@ -723,13 +637,7 @@ w-4
 
 
 
-
-
-
 </div>
-
-
-
 
 
 

@@ -1,31 +1,60 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight, BarChart3, Search } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { DotPattern } from "@/components/dot-pattern"
+import Link from "next/link"
+
+import {
+  ArrowRight,
+  BarChart3,
+  Search
+} from "lucide-react"
+
+
+import {
+  Button
+} from "@/components/ui/button"
+
+
+import {
+  Badge
+} from "@/components/ui/badge"
+
+
+import {
+  DotPattern
+} from "@/components/dot-pattern"
+
+
+
 
 
 export function HeroSection() {
 
+
 return (
 
+
 <section
+
 id="hero"
+
+aria-label="SIHARGA CEPAT informasi harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan"
+
 className="
 relative
 overflow-hidden
 py-16
 sm:py-20
 "
+
 >
 
 
-{/* Background Gradient Sama */}
+
+
 
 <div
+
 className="
 absolute
 inset-0
@@ -34,24 +63,33 @@ from-green-500/10
 via-transparent
 to-red-500/10
 "
+
 />
 
 
 
-{/* Background Pattern */}
+
 
 <div
+
 className="
 absolute
 inset-0
 "
+
 >
 
+
 <DotPattern
+
 className="opacity-40"
+
 size="md"
+
 fadeStyle="ellipse"
+
 />
+
 
 </div>
 
@@ -59,80 +97,96 @@ fadeStyle="ellipse"
 
 
 
+
+
+
+
 <div
+
 className="
 container
 mx-auto
+relative
 px-4
 sm:px-6
 lg:px-8
-relative
 "
+
 >
 
 
 <div
+
 className="
 mx-auto
 max-w-5xl
 text-center
 "
+
 >
 
 
 
 
 
-{/* Badge */}
+
+
+
+
+{/* BADGE */}
+
+
 
 <div
+
 className="
 mb-8
 flex
 justify-center
 "
+
 >
 
 
 <Badge
-  variant="outline"
-  className="
-    flex
-    w-fit
-    max-w-full
-    items-start
-    gap-2
-    px-3
-    py-2
-    sm:px-5
-    sm:py-2.5
-    border-green-600/40
-    text-green-700
-    dark:text-green-400
-    bg-background/40
-    backdrop-blur
-    text-xs
-    sm:text-sm
-    leading-relaxed
-    whitespace-normal
-  "
+
+variant="outline"
+
+className="
+flex
+w-fit
+items-center
+gap-2
+px-4
+py-2
+border-green-600/40
+text-green-700
+dark:text-green-400
+bg-background/40
+backdrop-blur
+"
+
 >
 
-  <BarChart3
-    className="
-      mt-0.5
-      h-4
-      w-4
-      shrink-0
-      sm:h-5
-      sm:w-5
-    "
-  />
 
-  <span className="text-left">
-    Monitoring Harga Barang Pokok oleh Dinas Perdagangan,
-    Perindustrian, Koperasi dan UMKM Kab. Timor Tengah Selatan
-  </span>
+<BarChart3
+
+className="
+h-4
+w-4
+"
+
+ />
+
+
+
+<span>
+
+Sistem Informasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan
+
+</span>
+
+
 
 </Badge>
 
@@ -146,7 +200,14 @@ justify-center
 
 
 
-{/* Headline */}
+
+
+
+
+
+{/* H1 SEO */}
+
+
 
 <h1
 
@@ -162,7 +223,7 @@ lg:text-7xl
 >
 
 
-Pantau Harga Barang Kebutuhan Pokok
+SIHARGA CEPAT
 
 
 <span
@@ -179,7 +240,9 @@ text-transparent
 
 >
 
-Cepat, Terpadu dan Transparan
+
+Informasi Harga Barang Kebutuhan Pokok TTS
+
 
 </span>
 
@@ -192,14 +255,21 @@ Cepat, Terpadu dan Transparan
 
 
 
-{/* Description */}
+
+
+
+
+
+{/* DESCRIPTION */}
+
+
 
 <p
 
 className="
 mx-auto
-max-w-3xl
 mb-10
+max-w-3xl
 text-lg
 text-muted-foreground
 sm:text-xl
@@ -208,10 +278,7 @@ sm:text-xl
 >
 
 
-SIHARGA CEPAT Kabupaten Timor Tengah Selatan
-menyediakan informasi harga barang kebutuhan pokok secara berkala untuk mendukung
-monitoring pasar, analisis perdagangan,
-serta pengambilan kebijakan daerah.
+SIHARGA CEPAT merupakan Sistem Informasi Harga Barang Kebutuhan Pokok Cepat dan Terpadu yang menyediakan informasi harga pangan, harga komoditas, dan perkembangan pasar Kabupaten Timor Tengah Selatan secara cepat, akurat, transparan, dan mudah diakses masyarakat.
 
 
 </p>
@@ -222,7 +289,14 @@ serta pengambilan kebijakan daerah.
 
 
 
+
+
+
+
+
 {/* CTA */}
+
+
 
 <div
 
@@ -242,11 +316,11 @@ sm:justify-center
 size="lg"
 
 className="
-text-base
 cursor-pointer
 bg-green-600
-hover:bg-green-700
+text-base
 shadow-lg
+hover:bg-green-700
 "
 
 asChild
@@ -255,53 +329,75 @@ asChild
 
 
 <Link
+
 href="/harga"
+
+aria-label="Lihat harga barang kebutuhan pokok hari ini"
+
 >
 
 
 <Search
+
 className="
 mr-2
 h-5
 w-5
 "
+
 />
+
 
 
 Lihat Harga Hari Ini
 
 
+
 <ArrowRight
+
 className="
 ml-2
 h-4
 w-4
 "
+
 />
 
 
+
 </Link>
+
 
 
 </Button>
 
 
 
+
+
+
 </div>
 
 
 
 
 
+
+
+
 </div>
 
 
 </div>
+
+
+
 
 
 </section>
 
 
 )
+
 
 }

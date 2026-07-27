@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 
-
 import {
   Input
 } from "@/components/ui/input";
@@ -125,6 +124,8 @@ category,
 
 
 
+
+
 const [
 
 search,
@@ -134,6 +135,7 @@ setSearch
 ]=
 
 useState("");
+
 
 
 
@@ -180,6 +182,8 @@ const itemsPerPage = 6;
 
 
 
+
+
 // =========================
 // FILTER
 // =========================
@@ -204,7 +208,11 @@ category === "Semua"
 
 
 
+
+
 ||
+
+
 
 
 
@@ -233,7 +241,12 @@ search.toLowerCase();
 
 
 
+
+
+
+
 const matchSearch =
+
 
 
 
@@ -271,6 +284,7 @@ item.ringkasan
 
 
 
+
 ||
 
 
@@ -293,6 +307,8 @@ item.created_by
 
 
 
+
+
 return (
 
 matchCategory
@@ -306,6 +322,7 @@ Boolean(matchSearch)
 
 
 });
+
 
 
 
@@ -371,6 +388,7 @@ itemsPerPage
 
 
 
+
 const startIndex =
 
 (page-1)
@@ -378,6 +396,7 @@ const startIndex =
 *
 
 itemsPerPage;
+
 
 
 
@@ -394,6 +413,7 @@ startIndex,
 startIndex + itemsPerPage
 
 );
+
 
 
 
@@ -453,19 +473,35 @@ block:"start"
 
 
 
+
+
 return (
 
 
 
-<div
+<section
 
 ref={listRef}
+
+aria-label="Daftar publikasi harga barang kebutuhan pokok"
 
 className="
 space-y-8
 "
 
 >
+
+
+
+<h2
+
+className="sr-only"
+
+>
+
+Daftar Publikasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan
+
+</h2>
 
 
 
@@ -491,6 +527,8 @@ md:justify-between
 "
 
 >
+
+
 
 
 
@@ -528,12 +566,13 @@ text-muted-foreground
 
 
 
+
+
 <Input
 
 
-placeholder="
-Cari publikasi...
-"
+
+placeholder="Cari publikasi..."
 
 
 
@@ -565,7 +604,12 @@ pl-10
 
 
 
+
 </div>
+
+
+
+
 
 
 
@@ -589,6 +633,7 @@ text-muted-foreground
 Menampilkan
 
 
+
 {" "}
 
 
@@ -604,18 +649,21 @@ text-foreground
 
 {filteredData.length}
 
-
 </span>
 
 
 
 {" "}
 
-publikasi
+
+
+laporan dan informasi publikasi harga
 
 
 
 </p>
+
+
 
 
 
@@ -637,7 +685,11 @@ publikasi
 
 
 
+
+
 {/* CARD */}
+
+
 
 
 
@@ -649,6 +701,8 @@ currentData.length === 0
 
 
 ?
+
+
 
 (
 
@@ -681,8 +735,6 @@ Tidak ada publikasi ditemukan.
 
 :
 
-
-
 (
 
 
@@ -697,6 +749,8 @@ lg:grid-cols-3
 gap-6
 "
 
+role="list"
+
 >
 
 
@@ -707,10 +761,16 @@ currentData.map((item)=>(
 
 
 
-<PublicationCard
-
+<div
 
 key={item.id}
+
+role="listitem"
+
+>
+
+
+<PublicationCard
 
 
 item={item}
@@ -719,8 +779,12 @@ item={item}
 />
 
 
+</div>
+
+
 
 ))
+
 
 
 }
@@ -750,11 +814,14 @@ item={item}
 
 
 
+
+
 {/* PAGINATION */}
 
 
 
 {
+
 
 
 totalPage > 1
@@ -783,6 +850,8 @@ pt-6
 
 
 
+
+
 <Button
 
 
@@ -790,6 +859,7 @@ variant="outline"
 
 
 size="icon"
+
 
 
 
@@ -804,6 +874,7 @@ onClick={()=>changePage(page-1)}
 >
 
 
+
 <ChevronLeft
 
 className="
@@ -814,7 +885,11 @@ w-4
 />
 
 
+
 </Button>
+
+
+
 
 
 
@@ -886,7 +961,9 @@ onClick={()=>changePage(pageNumber)}
 >
 
 
+
 {pageNumber}
+
 
 
 </Button>
@@ -899,12 +976,14 @@ onClick={()=>changePage(pageNumber)}
 
 })
 
-
 }
 
 
 
 </div>
+
+
+
 
 
 
@@ -924,6 +1003,7 @@ size="icon"
 
 
 
+
 disabled={page===totalPage}
 
 
@@ -935,6 +1015,7 @@ onClick={()=>changePage(page+1)}
 >
 
 
+
 <ChevronRight
 
 className="
@@ -943,6 +1024,7 @@ w-4
 "
 
 />
+
 
 
 </Button>
@@ -969,7 +1051,7 @@ w-4
 
 
 
-</div>
+</section>
 
 
 

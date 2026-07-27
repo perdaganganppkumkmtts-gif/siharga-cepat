@@ -30,6 +30,11 @@ import {
 } from "./components/stats-section"
 
 
+import {
+  CTASection
+} from "./components/cta-section"
+
+
 import { 
   LandingFooter 
 } from "@/components/landing/footer"
@@ -125,22 +130,6 @@ export function LandingPageContent({
 
         />
 
-
-
-
-
-
-
-        {/* Saran Pengunjung */}
-
-        <FeedbackSection />
-
-
-
-
-
-
-
         {/* Statistik Website */}
 
         <StatsSection
@@ -150,7 +139,12 @@ export function LandingPageContent({
         />
 
 
+        <CTASection />
 
+        
+        {/* Saran Pengunjung */}
+
+        <FeedbackSection />
 
 
       </main>
