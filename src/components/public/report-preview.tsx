@@ -287,27 +287,6 @@ data={data}
 />
 
 
-
-
-
-
-
-
-
-<ReportSource />
-
-
-
-
-
-
-
-
-
-
-
-
-
 {/* =========================
 LAMPIRAN TREND FLUKTUASI
 ========================= */}
@@ -418,6 +397,7 @@ data={data}
 
 
 
+<ReportSource />
 
 
 

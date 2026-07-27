@@ -203,7 +203,7 @@ title:
 
 description:
 
-"Informasi perkembangan harga barang kebutuhan pokok dan barang penting Kabupaten Timor Tengah Selatan berdasarkan pemantauan harga pasar.",
+"Informasi perkembangan harga barang kebutuhan pokok Kabupaten Timor Tengah Selatan berdasarkan pemantauan pada Pasar Inpres SoE.",
 
 
 

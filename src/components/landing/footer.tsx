@@ -677,16 +677,21 @@ text-center
 
 Design & Development by
 
-<span
+<Link
+href="https://www.instagram.com/roysadukh?igsh=MXVtbmxkNDBpMjl0ZA%3D%3D&utm_source=qr"
+target="_blank"
+rel="noopener noreferrer"
 className="
 ml-1
 text-primary
+hover:underline
+transition-colors
 "
 >
 
 Yoob Benry Sadukh, S.T.
 
-</span>
+</Link>
 
 
 </p>
