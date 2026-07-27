@@ -561,6 +561,8 @@ interface PublishLaporanProps {
 
   createdBy:string
 
+  cover: File
+
   data:any[]
 
 }
@@ -577,6 +579,8 @@ export async function publishLaporan({
 judul,
 
 createdBy,
+
+cover,
 
 data
 
@@ -610,6 +614,13 @@ throw new Error(
 
 }
 
+if(!cover){
+
+throw new Error(
+"Cover laporan wajib diunggah."
+)
+
+}
 
 
 
@@ -644,7 +655,112 @@ throw new Error(
 
 
 
+// =====================================
+// UPLOAD COVER LAPORAN
+// =====================================
 
+
+const fileExt =
+
+cover.name
+
+.split(".")
+
+.pop()
+
+
+
+const fileName =
+
+`laporan/${Date.now()}.${fileExt}`
+
+
+
+
+
+const {
+
+error:uploadError
+
+}
+
+=
+
+await supabase
+
+.storage
+
+.from("publikasi")
+
+.upload(
+
+fileName,
+
+cover,
+
+{
+
+contentType:
+cover.type
+
+}
+
+)
+
+
+
+
+
+if(uploadError){
+
+
+console.error(
+
+"Upload cover error:",
+
+uploadError
+
+)
+
+
+throw new Error(
+
+uploadError.message
+
+)
+
+
+}
+
+
+
+
+
+const {
+
+data:publicData
+
+}
+
+=
+
+supabase
+
+.storage
+
+.from("publikasi")
+
+.getPublicUrl(
+
+fileName
+
+)
+
+
+
+const coverUrl =
+
+publicData.publicUrl
 
 
 
@@ -732,6 +848,8 @@ slug,
 jenis:
 "laporan",
 
+gambar:
+coverUrl,
 
 
 ringkasan:

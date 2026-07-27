@@ -449,17 +449,12 @@ payload:any
 ){
 
 
-
 try{
 
 
 setPublishing(true)
 
 setError(null)
-
-
-
-
 
 
 
@@ -470,15 +465,16 @@ judul:
 payload.judul,
 
 
-
 createdBy:
 payload.createdBy,
 
 
+cover:
+payload.cover,
+
 
 data:
 result
-
 
 
 })

@@ -27,16 +27,6 @@ import {
 
 
 import {
-  TrendComparisonChart
-} from "./trend-comparison-chart"
-
-
-import {
-  TrendComparisonTable
-} from "./trend-comparison-table"
-
-
-import {
   ReportTable
 } from "./report-table"
 
@@ -417,46 +407,6 @@ data={item}
 
 
 <TrendSummary
-
-
-data={data}
-
-
-/>
-
-
-
-
-
-
-
-
-
-{/* GRAFIK TREND */}
-
-
-
-<TrendComparisonChart
-
-
-data={data}
-
-
-/>
-
-
-
-
-
-
-
-
-
-{/* TABEL PERBANDINGAN */}
-
-
-
-<TrendComparisonTable
 
 
 data={data}

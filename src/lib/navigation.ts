@@ -102,19 +102,13 @@ export function getNavigation(role: UserRole) {
             },
 
             {
-              title:"Tren dan Fluktuasi",
+              title:"Analisis Bapok",
               url:"/dashboard/analisis/trend-fluktuasi",
               icon:BarChart2,
             },
 
             {
-              title:"Laporan",
-              url:"/dashboard/analisis/laporan",
-              icon:FileText,
-            },
-
-            {
-              title:"Laporan Gabung",
+              title:"Export Laporan Dinas",
               url:"/dashboard/analisis/publik-laporan",
               icon:FileText,
             },
@@ -125,6 +119,12 @@ export function getNavigation(role: UserRole) {
         {
           label:"Publikasi",
           items:[
+
+            {
+              title:"Publikasi Laporan",
+              url:"/dashboard/analisis/laporan",
+              icon:FileText,
+            },
             {
               title:"Berita",
               url:"/dashboard/publikasi/berita",

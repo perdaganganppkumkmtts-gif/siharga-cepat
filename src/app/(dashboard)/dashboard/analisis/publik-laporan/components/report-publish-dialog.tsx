@@ -52,6 +52,8 @@ judul:string
 
 createdBy:string
 
+cover:File
+
 })=>void
 
 
@@ -109,7 +111,16 @@ useState(
 const [createdBy,setCreatedBy]=
 useState("")
 
+const [cover,setCover]=
+useState<File | null>(null)
 
+
+const [preview,setPreview]=
+useState("")
+
+
+const [error,setError]=
+useState("")
 
 
 
@@ -120,16 +131,14 @@ useState("")
 function handleSubmit(){
 
 
+setError("")
 
 
+if(!judul.trim()){
 
-if(
-
-!judul.trim() ||
-
-!createdBy.trim()
-
-){
+setError(
+"Judul laporan wajib diisi."
+)
 
 return
 
@@ -137,27 +146,43 @@ return
 
 
 
+if(!createdBy.trim()){
 
+setError(
+"Dibuat Oleh wajib diisi."
+)
+
+return
+
+}
+
+
+
+if(!cover){
+
+setError(
+"Cover laporan wajib diunggah."
+)
+
+return
+
+}
 
 
 
 onSubmit({
 
-
 judul:
 judul.trim(),
 
 
-
 createdBy:
-createdBy.trim()
+createdBy.trim(),
 
 
+cover
 
 })
-
-
-
 
 
 }
@@ -318,7 +343,80 @@ setCreatedBy(e.target.value)
 
 
 </div>
+<div>
 
+<Label>
+Cover Laporan
+</Label>
+
+
+<Input
+
+type="file"
+
+accept="image/png,image/jpeg,image/jpg,image/webp"
+
+onChange={(e)=>{
+
+
+const file =
+e.target.files?.[0]
+
+
+if(!file) return
+
+
+
+if(
+file.size > 5 * 1024 * 1024
+){
+
+setError(
+"Ukuran gambar maksimal 5 MB."
+)
+
+return
+
+}
+
+
+
+setCover(file)
+
+setPreview(
+URL.createObjectURL(file)
+)
+
+
+}}
+
+/>
+
+
+{
+preview &&
+
+<img
+
+src={preview}
+
+alt="Preview Cover"
+
+className="
+mt-3
+h-48
+w-full
+rounded-lg
+object-cover
+border
+"
+
+/>
+
+}
+
+
+</div>
 
 
 
@@ -336,7 +434,26 @@ setCreatedBy(e.target.value)
 
 
 
+{
+error &&
 
+<div
+
+className="
+rounded-md
+bg-destructive/10
+p-3
+text-sm
+text-destructive
+"
+
+>
+
+{error}
+
+</div>
+
+}
 <DialogFooter>
 
 
@@ -381,7 +498,11 @@ disabled={
 
 loading ||
 
-!createdBy.trim()
+!judul.trim() ||
+
+!createdBy.trim() ||
+
+!cover
 
 }
 
