@@ -327,7 +327,7 @@ text-muted-foreground
 
 >
 
-Harga {item.name} TTS
+Harga {item.name}
 
 </p>
 
