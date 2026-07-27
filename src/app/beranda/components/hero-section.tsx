@@ -149,45 +149,44 @@ justify-center
 
 
 <Badge
-
-variant="outline"
-
-className="
-flex
-w-fit
-items-center
-gap-2
-px-4
-py-2
-border-green-600/40
-text-green-700
-dark:text-green-400
-bg-background/40
-backdrop-blur
-"
-
+  variant="outline"
+  className="
+    flex
+    w-full
+    sm:w-fit
+    items-start
+    sm:items-center
+    gap-2
+    px-4
+    py-2
+    border-green-600/40
+    text-green-700
+    dark:text-green-400
+    bg-background/40
+    backdrop-blur
+    whitespace-normal
+    text-center
+    sm:text-left
+  "
 >
+  <BarChart3
+    className="
+      h-4
+      w-4
+      mt-0.5
+      sm:mt-0
+      shrink-0
+    "
+  />
 
-
-<BarChart3
-
-className="
-h-4
-w-4
-"
-
- />
-
-
-
-<span>
-
-Sistem Informasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan
-
-</span>
-
-
-
+  <span
+    className="
+      text-sm
+      leading-relaxed
+    "
+  >
+    Sistem Informasi Harga Barang Kebutuhan Pokok Kabupaten Timor Tengah Selatan
+  </span>
 </Badge>
 
 
