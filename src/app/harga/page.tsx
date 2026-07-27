@@ -248,7 +248,7 @@ images:[
 
 url:
 
-"/seo-image.png",
+"https://sihargacepat-ppkumkmtts.vercel.app/seo-image.png",
 
 
 width:
