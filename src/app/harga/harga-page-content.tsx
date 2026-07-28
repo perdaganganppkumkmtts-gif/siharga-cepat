@@ -431,7 +431,7 @@ RANKING
 
 <CardTitle>
 
-Perubahan Harga Komoditas Minggu Terakhir
+Perubahan Harga Bapok Terbaru dibandingkan dengan harga rata-rata minggu sebelumnya
 
 
 </CardTitle>

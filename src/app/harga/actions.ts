@@ -325,88 +325,510 @@ export async function getPriceMovementSummary() {
 // =============================
 
 export async function getCommodityMovementRanking() {
+
   const supabase = await createClient()
 
-  const latest = await getLatestDate()
-  const mingguIni = subtractDays(latest, 6)
-  const mingguLalu = subtractDays(latest, 13)
 
-  const { data, error } = await supabase
+  // ===============================
+  // 1. TANGGAL TERBARU
+  // ===============================
+
+  const latest =
+    await getLatestDate()
+
+
+
+  if(!latest){
+
+    return {
+      naik:[],
+      turun:[]
+    }
+
+  }
+
+
+
+  const latestDate =
+    new Date(latest)
+
+
+
+  // ===============================
+  // 2. RANGE MINGGU KALENDER
+  // SENIN - MINGGU
+  // ===============================
+
+
+  function getWeekRange(date:Date){
+
+
+    const day =
+      date.getDay()
+
+
+    const diff =
+      day === 0
+      ? -6
+      : 1 - day
+
+
+
+    const start =
+      new Date(date)
+
+
+    start.setDate(
+      date.getDate() + diff
+    )
+
+
+
+    const end =
+      new Date(start)
+
+
+    end.setDate(
+      start.getDate() + 6
+    )
+
+
+
+    return {
+      start,
+      end
+    }
+
+  }
+
+
+
+
+
+  const currentWeek =
+    getWeekRange(
+      latestDate
+    )
+
+
+
+  const previousWeekEnd =
+    new Date(
+      currentWeek.start
+    )
+
+
+  previousWeekEnd.setDate(
+    previousWeekEnd.getDate() - 1
+  )
+
+
+
+  const previousWeek =
+    getWeekRange(
+      previousWeekEnd
+    )
+
+
+
+
+
+
+
+  // ===============================
+  // 3. AMBIL DATA
+  // ===============================
+
+
+  const {
+    data,
+    error
+  }
+
+  =
+  await supabase
+
     .from("survei_detail")
+
     .select(`
+
       harga,
+
       komoditas(
         id,
         nama,
         satuan
       ),
+
       survei_harian!inner(
         tanggal
       )
-    `)
-    .gte("survei_harian.tanggal", mingguLalu)
 
-  if (error) {
-    throw new Error(error.message)
+    `)
+
+    .gte(
+      "survei_harian.tanggal",
+      previousWeek.start.toISOString().split("T")[0]
+    )
+
+
+
+
+
+
+  if(error){
+
+    throw new Error(
+      error.message
+    )
+
   }
 
-  const grouped: any = {}
 
-  data?.forEach((item) => {
-    const tanggal = getTanggalSurvei(item.survei_harian)
 
-    if (!tanggal) return
 
-    const komoditas = getKomoditas(item.komoditas)
 
-    if (!komoditas) return
 
-    const id = komoditas.id
+  // ===============================
+  // 4. KELOMPOKKAN KOMODITAS
+  // ===============================
 
-    if (!grouped[id]) {
-      grouped[id] = {
-        nama: komoditas.nama,
-        satuan: komoditas.satuan,
-        ini: [],
-        lalu: [],
+
+  const grouped:any = {}
+
+
+
+
+  data?.forEach(
+
+    (item:any)=>{
+
+
+      const tanggal =
+        getTanggalSurvei(
+          item.survei_harian
+        )
+
+
+      if(!tanggal)
+        return
+
+
+
+
+      const komoditas =
+        getKomoditas(
+          item.komoditas
+        )
+
+
+
+      if(!komoditas)
+        return
+
+
+
+
+      const id =
+        komoditas.id
+
+
+
+
+
+      if(!grouped[id]){
+
+
+        grouped[id]={
+
+          nama:
+          komoditas.nama,
+
+          satuan:
+          komoditas.satuan,
+
+
+          hargaTerbaru:null,
+
+
+          mingguLalu:[]
+
+        }
+
+
       }
+
+
+
+
+
+
+      const harga =
+        Number(
+          item.harga
+        )
+
+
+
+      const tanggalData =
+        new Date(
+          tanggal
+        )
+
+
+
+
+
+
+      // ===============================
+      // MINGGU SEBELUMNYA
+      // ===============================
+
+      if(
+
+        tanggalData >= previousWeek.start
+
+        &&
+
+        tanggalData <= previousWeek.end
+
+      ){
+
+        grouped[id]
+        .mingguLalu
+        .push(harga)
+
+      }
+
+
+
+
+
+
+      // ===============================
+      // HARGA TERBARU
+      // ===============================
+
+      if(
+
+        tanggalData >= currentWeek.start
+
+        &&
+
+        tanggalData <= currentWeek.end
+
+      ){
+
+
+        if(
+          grouped[id].hargaTerbaru === null
+          ||
+
+          tanggalData >
+          grouped[id].hargaTerbaru.tanggal
+
+        ){
+
+          grouped[id].hargaTerbaru={
+
+            tanggal:tanggalData,
+
+            harga
+
+          }
+
+        }
+
+
+      }
+
+
+
     }
 
-    const harga = Number(item.harga)
+  )
 
-    if (new Date(tanggal) >= new Date(mingguIni)) {
-      grouped[id].ini.push(harga)
-    } else {
-      grouped[id].lalu.push(harga)
+
+
+
+
+
+
+  // ===============================
+  // 5. HITUNG PERSENTASE
+  // ===============================
+
+
+  const result =
+
+  Object.values(grouped)
+
+  .map(
+
+    (item:any)=>{
+
+
+      if(
+
+        !item.hargaTerbaru
+
+        ||
+
+        item.mingguLalu.length === 0
+
+      ){
+
+        return null
+
+      }
+
+
+
+
+
+      const rataMingguLalu =
+
+        average(
+          item.mingguLalu
+        )
+
+
+
+
+
+      const hargaSekarang =
+
+        item.hargaTerbaru.harga
+
+
+
+
+
+
+      const perubahan =
+
+        rataMingguLalu === 0
+
+        ?
+
+        0
+
+        :
+
+        (
+          (
+            hargaSekarang -
+            rataMingguLalu
+          )
+
+          /
+
+          rataMingguLalu
+
+        )
+
+        *
+
+        100
+
+
+
+
+
+
+      return {
+
+        nama:
+        item.nama,
+
+
+        satuan:
+        item.satuan,
+
+
+        rataIni:
+        hargaSekarang,
+
+
+        rataLalu:
+        rataMingguLalu,
+
+
+        perubahan:
+        Number(
+          perubahan.toFixed(2)
+        )
+
+      }
+
+
     }
-  })
 
-  const result = Object.values(grouped).map((item: any) => {
-    const rataIni = average(item.ini)
-    const rataLalu = average(item.lalu)
+  )
 
-    return {
-      nama: item.nama,
-      satuan: item.satuan,
-      rataIni,
-      rataLalu,
-      perubahan: rataLalu
-        ? ((rataIni - rataLalu) / rataLalu) * 100
-        : 0,
-    }
-  })
+  .filter(Boolean)
+
+
+
+
+
+
+
+  // ===============================
+  // 6. RETURN
+  // ===============================
+
 
   return {
-    naik: result
-      .filter((item: any) => item.perubahan > 0)
-      .sort((a: any, b: any) => b.perubahan - a.perubahan)
-      .slice(0, 5),
 
-    turun: result
-      .filter((item: any) => item.perubahan < 0)
-      .sort((a: any, b: any) => a.perubahan - b.perubahan)
-      .slice(0, 5),
+
+    naik:
+
+      result
+
+      .filter(
+        (item:any)=>
+          item.perubahan > 0
+      )
+
+      .sort(
+        (a:any,b:any)=>
+          b.perubahan -
+          a.perubahan
+      )
+
+      .slice(
+        0,
+        5
+      ),
+
+
+
+
+
+    turun:
+
+      result
+
+      .filter(
+        (item:any)=>
+          item.perubahan < 0
+      )
+
+      .sort(
+        (a:any,b:any)=>
+          a.perubahan -
+          b.perubahan
+      )
+
+      .slice(
+        0,
+        5
+      )
+
   }
+
+
 }
 
 // =============================

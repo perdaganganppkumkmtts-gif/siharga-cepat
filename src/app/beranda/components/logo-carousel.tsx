@@ -180,7 +180,7 @@ text-muted-foreground
 
 >
 
-Perubahan harga satu minggu terakhir
+Perubahan harga terbaru dibandingkan dengan harga rata-rata minggu sebelumnya
 
 </p>
 
@@ -400,9 +400,7 @@ w-4
 
 
 
-+
-
-{item.percent.toFixed(2)}%
++{item.percent.toFixed(2)}%
 
 
 
@@ -450,7 +448,7 @@ w-4
 
 
 
-{item.percent.toFixed(2)}%
+-{item.percent.toFixed(2)}%
 
 
 

@@ -45,7 +45,7 @@ export function CommodityRanking({
               text-muted-foreground
               "
             >
-              Belum ada data
+              Tidak Ada Perubahan Harga Barang Kebutuhan Pokok
             </div>
 
           ) : (

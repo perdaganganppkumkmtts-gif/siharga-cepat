@@ -6,232 +6,278 @@ import {
 
 
 
-export async function getCommodityTrend(){
+export async function getCommodityTrend() {
 
+  const supabase = await createClient();
 
-const supabase =
-await createClient();
 
+  // ==================================================
+  // 1. AMBIL SEMUA DATA SURVEI TERAKHIR
+  // ==================================================
 
+  const {
+    data: surveys,
+    error: surveyError
+  } =
+  await supabase
 
+    .from("survei_harian")
 
+    .select(`
+      id,
+      tanggal
+    `)
 
+    .order(
+      "tanggal",
+      {
+        ascending:false
+      }
+    );
 
-// ==================================================
-// 1. AMBIL TANGGAL SURVEI TERBARU
-// ==================================================
 
+  if(surveyError){
 
-const {
+    throw new Error(
+      surveyError.message
+    );
 
-data: surveiTerbaru,
+  }
 
-error: latestError
 
-}
-=
-await supabase
+  if(!surveys || surveys.length === 0){
 
-.from("survei_harian")
+    return [];
 
-.select(`
+  }
 
-id,
 
-tanggal
 
-`)
+  // ==================================================
+  // 2. TANGGAL SURVEI TERBARU
+  // ==================================================
 
-.order(
-"tanggal",
-{
-ascending:false
-}
-)
+  const latestDate =
+    new Date(
+      surveys[0].tanggal
+    );
 
-.limit(1)
-.maybeSingle();
 
 
+  // ==================================================
+  // 3. TENTUKAN RANGE MINGGU
+  // SENIN - MINGGU
+  // ==================================================
 
+  function getWeekRange(date:Date){
 
 
+    const day =
+      date.getDay();
 
-if(latestError){
 
+    const diff =
+      day === 0
+      ? -6
+      : 1 - day;
 
-console.error(
-"GET LATEST SURVEY ERROR:",
-JSON.stringify(
-latestError,
-null,
-2
-)
-);
 
 
-throw new Error(
-latestError.message
-);
+    const start =
+      new Date(date);
 
+    start.setDate(
+      date.getDate() + diff
+    );
 
-}
 
 
+    const end =
+      new Date(start);
 
+    end.setDate(
+      start.getDate() + 6
+    );
 
 
 
+    return {
+      start,
+      end
+    };
 
-if(!surveiTerbaru){
+  }
 
-return [];
 
-}
 
 
+  const currentWeek =
+    getWeekRange(
+      latestDate
+    );
 
 
 
+  const previousWeekDate =
+    new Date(
+      currentWeek.start
+    );
 
 
+  previousWeekDate.setDate(
+    previousWeekDate.getDate() - 1
+  );
 
 
-// ==================================================
-// 2. HITUNG PERIODE 7 HARI TERAKHIR
-//    BERDASARKAN DATA TERBARU
-// ==================================================
 
+  const previousWeek =
+    getWeekRange(
+      previousWeekDate
+    );
 
-const tanggalAkhir =
 
-new Date(
-surveiTerbaru.tanggal
-);
 
 
 
-const tanggalAwal =
 
-new Date(
-tanggalAkhir
-);
+  function formatDate(date:Date){
 
+    return date
+      .toISOString()
+      .split("T")[0];
 
+  }
 
-tanggalAwal.setDate(
-tanggalAwal.getDate() - 6
-);
 
 
 
 
 
+  // ==================================================
+  // 4. KELOMPOKKAN SURVEI MINGGU BERJALAN
+  // DAN MINGGU SEBELUMNYA
+  // ==================================================
 
-const periodeMulai =
 
-tanggalAwal
-.toISOString()
-.split("T")[0];
+  const currentSurveyIds =
+    surveys
 
+      .filter(
+        item =>
+          new Date(item.tanggal)
+          >= currentWeek.start
+          &&
+          new Date(item.tanggal)
+          <= currentWeek.end
+      )
 
+      .map(
+        item=>item.id
+      );
 
-const periodeAkhir =
 
-tanggalAkhir
-.toISOString()
-.split("T")[0];
 
 
+  const previousSurveyIds =
+    surveys
 
+      .filter(
+        item =>
+          new Date(item.tanggal)
+          >= previousWeek.start
+          &&
+          new Date(item.tanggal)
+          <= previousWeek.end
+      )
 
+      .map(
+        item=>item.id
+      );
 
 
 
 
 
-// ==================================================
-// 3. AMBIL DATA SURVEI 7 HARI
-// ==================================================
 
+  if(
+    currentSurveyIds.length === 0 ||
+    previousSurveyIds.length === 0
+  ){
 
-const {
+    return [];
 
-data: survei,
+  }
 
-error: surveiError
 
-}
-=
-await supabase
 
-.from("survei_harian")
 
-.select(`
 
-id,
 
-tanggal
 
-`)
+  // ==================================================
+  // 5. AMBIL DETAIL HARGA
+  // ==================================================
 
-.gte(
-"tanggal",
-periodeMulai
-)
 
-.lte(
-"tanggal",
-periodeAkhir
-)
+  const {
+    data,
+    error
+  }
 
-.order(
-"tanggal",
-{
-ascending:true
-}
-);
+  =
+  await supabase
 
+    .from("survei_detail")
 
+    .select(`
 
+      harga,
 
+      survei_id,
 
+      komoditas(
+        nama,
+        satuan
+      )
 
-if(surveiError){
+    `)
 
+    .in(
+      "survei_id",
+      [
+        ...currentSurveyIds,
+        ...previousSurveyIds
+      ]
+    );
 
-console.error(
-"GET SURVEY ERROR:",
-JSON.stringify(
-surveiError,
-null,
-2
-)
-);
 
 
-throw new Error(
-surveiError.message
-);
 
+  if(error){
 
-}
+    throw new Error(
+      error.message
+    );
 
+  }
 
 
 
 
 
-if(
-!survei ||
-survei.length===0
-){
 
-return [];
 
-}
+  const surveyMap =
+    new Map(
 
+      surveys.map(
+        item=>[
+          item.id,
+          new Date(item.tanggal)
+        ]
+      )
 
+    );
 
 
 
@@ -239,364 +285,299 @@ return [];
 
 
 
-// ==================================================
-// 4. AMBIL DETAIL HARGA KOMODITAS
-// ==================================================
 
+  // ==================================================
+  // 6. GROUP PER KOMODITAS
+  // ==================================================
 
-const surveiIds =
 
-survei.map(
-(item)=>item.id
-);
+  const grouped:any = {};
 
 
 
+  data?.forEach(
 
+    (item:any)=>{
 
 
-const {
+      if(!item.komoditas){
 
-data,
+        return;
 
-error
+      }
 
-}
-=
-await supabase
 
-.from("survei_detail")
 
-.select(`
+      const tanggal =
+        surveyMap.get(
+          item.survei_id
+        );
 
-harga,
 
-survei_id,
 
-komoditas(
+      if(!tanggal){
 
-nama,
+        return;
 
-satuan
+      }
 
-)
 
-`)
 
-.in(
-"survei_id",
-surveiIds
-);
 
+      const nama =
+        item.komoditas.nama;
 
 
 
 
+      if(!grouped[nama]){
 
-if(error){
 
+        grouped[nama]={
 
-console.error(
-"GET DETAIL ERROR:",
-JSON.stringify(
-error,
-null,
-2
-)
-);
+          name:nama,
 
+          unit:item.komoditas.satuan,
 
-throw new Error(
-error.message
-);
+          current:[],
 
-}
+          previous:[]
 
+        };
 
 
+      }
 
 
 
 
 
+      const price =
+        Number(
+          item.harga
+        );
 
-// ==================================================
-// 5. KELOMPOKAN DATA KOMODITAS
-// ==================================================
 
 
-const grouped:any = {};
 
 
+      if(
+        tanggal >= currentWeek.start &&
+        tanggal <= currentWeek.end
+      ){
 
+        grouped[nama]
+        .current
+        .push(price);
 
+      }
 
 
-data?.forEach(
 
-(item:any)=>{
 
 
-const survey =
+      if(
+        tanggal >= previousWeek.start &&
+        tanggal <= previousWeek.end
+      ){
 
-survei.find(
+        grouped[nama]
+        .previous
+        .push(price);
 
-(s)=>
-s.id === item.survei_id
+      }
 
-);
 
 
+    }
 
+  );
 
 
-if(
-!survey ||
-!item.komoditas
-){
 
-return;
 
-}
 
 
 
+  // ==================================================
+  // 7. HITUNG TREND
+  // ==================================================
 
 
-const nama =
+  const result =
 
-item.komoditas.nama;
+  Object.values(grouped)
 
+  .map(
 
+    (item:any)=>{
 
 
+      if(
+        item.current.length === 0 ||
+        item.previous.length === 0
+      ){
 
+        return null;
 
-if(
-!grouped[nama]
-){
+      }
 
 
-grouped[nama]={
 
 
-name:nama,
+      // harga terbaru minggu berjalan
 
+      const latestPrice =
+        item.current[
+          item.current.length - 1
+        ];
 
-unit:item.komoditas.satuan,
 
 
-prices:[]
 
 
-};
 
+      // rata-rata minggu sebelumnya
 
-}
+      const previousAverage =
 
+        item.previous.reduce(
 
+          (
+            sum:number,
+            value:number
+          )=>
 
+            sum + value,
 
+          0
 
+        )
 
-grouped[nama]
-.prices
-.push({
+        /
 
-tanggal:
-survey.tanggal,
+        item.previous.length;
 
 
-value:
-Number(item.harga)
 
-});
 
 
 
-}
 
-);
+      const change =
 
+        latestPrice -
+        previousAverage;
 
 
 
 
 
 
+      const percent =
 
+        previousAverage === 0
 
-// ==================================================
-// 6. HITUNG PERUBAHAN HARGA
-// ==================================================
+        ?
 
+        0
 
-const result =
+        :
 
+        (
+          change /
+          previousAverage
+        )
 
-Object.values(grouped)
+        *
 
-.map(
+        100;
 
-(item:any)=>{
 
 
 
-const prices =
 
-item.prices.sort(
 
-(a:any,b:any)=>
 
-new Date(a.tanggal).getTime()
--
-new Date(b.tanggal).getTime()
+      return {
 
-);
+        name:item.name,
 
+        unit:item.unit,
 
+        price:
+          Math.round(
+            latestPrice
+          ),
 
+        change:
+          Number(
+            change.toFixed(2)
+          ),
 
+        percent:
+          Number(
+            percent.toFixed(2)
+          ),
 
+        status:
 
-const first =
+          change > 0
 
-prices[0];
+          ?
 
+          "up"
 
+          :
 
-const last =
+          change < 0
 
-prices[
-prices.length - 1
-];
+          ?
 
+          "down"
 
+          :
 
+          "flat"
 
+      };
 
 
+    }
 
-const change =
+  )
 
-last.value -
-first.value;
+  .filter(Boolean);
 
 
 
 
 
 
-const percent =
 
-first.value === 0
+  // ==================================================
+  // 8. URUTKAN FLUKTUASI TERBESAR
+  // ==================================================
 
-?
 
-0
+  return result
 
-:
+    .sort(
 
-(change / first.value) * 100;
+      (a:any,b:any)=>
 
+        Math.abs(b.percent)
 
+        -
 
+        Math.abs(a.percent)
 
+    )
 
-
-
-return {
-
-
-name:
-item.name,
-
-
-unit:
-item.unit,
-
-
-price:
-last.value,
-
-
-change,
-
-
-percent,
-
-
-
-status:
-
-
-change > 0
-
-?
-
-"up"
-
-
-
-:
-
-change < 0
-
-?
-
-"down"
-
-
-
-:
-
-"flat"
-
-
-
-};
-
-
-}
-
-);
-
-
-
-
-
-
-
-
-
-// ==================================================
-// 7. URUTKAN PALING FLUKTUATIF
-// ==================================================
-
-
-return result
-
-.sort(
-
-(a:any,b:any)=>
-
-Math.abs(
-b.percent
-)
-
--
-
-Math.abs(
-a.percent
-)
-
-)
-
-.slice(
-0,
-10
-);
-
+    .slice(
+      0,
+      10
+    );
 
 
 }
