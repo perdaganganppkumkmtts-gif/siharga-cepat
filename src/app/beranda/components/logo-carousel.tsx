@@ -448,7 +448,7 @@ w-4
 
 
 
--{item.percent.toFixed(2)}%
+{item.percent.toFixed(2)}%
 
 
 
