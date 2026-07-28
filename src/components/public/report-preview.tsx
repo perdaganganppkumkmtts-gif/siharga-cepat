@@ -315,7 +315,7 @@ font-bold
 
 Lampiran
 
-Perkembangan dan Fluktuasi Harga Komoditas
+Perkembangan Harga Barang Kebutuhan Pokok
 
 </h2>
 
