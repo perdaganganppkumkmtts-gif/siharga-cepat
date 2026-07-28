@@ -46,7 +46,7 @@ import {
   PriceAnalysisChart
 } from "./components/pakai/price-analysis-chart"
 
-
+import { DateTimeWidget } from "@/components/date-time-widget"
 
 
 
@@ -410,7 +410,9 @@ dan pemerintah daerah dalam memantau perubahan harga pasar.
 
 
 
-
+<div className="mt-3 leading-relaxed space-y-6">
+      <DateTimeWidget />
+</div>
 
 
 

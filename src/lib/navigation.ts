@@ -213,7 +213,7 @@ export function getNavigation(role: UserRole) {
           items:[
             {
               title:"Dashboard",
-              url:"/dashboard",
+              url:"/dashboard/analisis",
               icon:LayoutDashboard,
             },
           ],
@@ -231,15 +231,15 @@ export function getNavigation(role: UserRole) {
             },
 
             {
-              title:"Monitoring Harga",
-              url:"/dashboard/analisis",
+              title:"Analisis Harga Bapok",
+              url:"/dashboard/analisis/trend-fluktuasi",
               icon:BarChart3,
             },
 
 
             {
-              title:"Laporan",
-              url:"/dashboard/analisis/laporan",
+              title:"Buat Laporan",
+              url:"/dashboard/analisis/publik-laporan",
               icon:FileText,
             },
 
@@ -260,7 +260,7 @@ export function getNavigation(role: UserRole) {
           items:[
             {
               title:"Dashboard",
-              url:"/dashboard",
+              url:"/dashboard/analisis",
               icon:LayoutDashboard,
             },
           ],
@@ -272,16 +272,17 @@ export function getNavigation(role: UserRole) {
 
           items:[
 
+
             {
-              title:"Monitoring Harga",
-              url:"/dashboard/monitoring",
-              icon:BarChart3,
+              title:"Analisis Harga Bapok",
+              url:"/dashboard/analisis/trend-fluktuasi",
+              icon:BarChart2,
             },
 
 
             {
-              title:"Persetujuan Laporan",
-              url:"/dashboard/persetujuan",
+              title:"Buat Laporan",
+              url:"/dashboard/analisis/publik-laporan",
               icon:FileText,
             },
 
