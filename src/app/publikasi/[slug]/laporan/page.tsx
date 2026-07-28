@@ -851,17 +851,16 @@ Dipublikasikan:
 {" "}
 
 {
-
-new Date(
-
-publication.published_at
-
-).toLocaleDateString(
-
-"id-ID"
-
-)
-
+  new Date(
+    publication.published_at
+  ).toLocaleDateString(
+    "id-ID",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  )
 }
 
 

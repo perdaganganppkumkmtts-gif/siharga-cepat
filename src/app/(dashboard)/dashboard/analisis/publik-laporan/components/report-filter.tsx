@@ -64,7 +64,21 @@ export interface CommodityOption {
 
 
 
+
 export interface ReportDateRange {
+
+  startDate:string
+
+  endDate:string
+
+}
+
+
+
+
+
+
+export interface ComparisonDateRange {
 
   startDate:string
 
@@ -98,6 +112,12 @@ interface Props {
 
 
 
+  comparisonRange:
+  ComparisonDateRange
+
+
+
+
   onSelectedChange:
   (
     value:string[]
@@ -105,10 +125,23 @@ interface Props {
 
 
 
+
+
   onDateRangeChange:
   (
     value:ReportDateRange
   )=>void
+
+
+
+
+
+  onComparisonRangeChange:
+  (
+    value:ComparisonDateRange
+  )=>void
+
+
 
 
 
@@ -134,9 +167,13 @@ selected,
 
 dateRange,
 
+comparisonRange,
+
 onSelectedChange,
 
 onDateRangeChange,
+
+onComparisonRangeChange,
 
 onGenerate,
 
@@ -154,7 +191,6 @@ open,
 setOpen
 
 ]=useState(false)
-
 
 
 
@@ -210,7 +246,6 @@ id
 }
 
 
-
 }
 
 
@@ -233,6 +268,7 @@ selected.length===0
 return "Pilih Komoditas"
 
 }
+
 
 
 
@@ -264,6 +300,8 @@ item.nama
 
 
 
+
+
 if(
 names.length <= 2
 ){
@@ -279,6 +317,7 @@ return names.join(", ")
 
 
 return `${names[0]}, ${names[1]} (+${names.length-2})`
+
 
 
 
@@ -303,7 +342,10 @@ commodities
 
 
 
+
+
 return (
+
 
 <div
 
@@ -321,18 +363,12 @@ space-y-6
 
 
 
-{/* =====================
-    FILTER
-===================== */}
-
-
-
 <div
 
 className="
 grid
 gap-6
-lg:grid-cols-2
+lg:grid-cols-3
 "
 
 >
@@ -345,7 +381,11 @@ lg:grid-cols-2
 
 
 
-{/* KOMODITAS */}
+{/* =====================
+    KOMODITAS
+===================== */}
+
+
 
 <div
 
@@ -368,7 +408,6 @@ font-medium
 Komoditas Laporan
 
 </label>
-
 
 
 
@@ -458,12 +497,12 @@ Cari komoditas...
 
 
 
+
 <CommandEmpty>
 
 Komoditas tidak ditemukan
 
 </CommandEmpty>
-
 
 
 
@@ -542,7 +581,9 @@ selected.includes(item.id)
 
 
 
+
 {item.nama}
+
 
 
 
@@ -557,11 +598,14 @@ selected.includes(item.id)
 
 
 
+
+
 }
 
 
 
 </CommandGroup>
+
 
 
 
@@ -590,7 +634,10 @@ selected.includes(item.id)
 
 
 
-{/* PERIODE */}
+
+{/* =====================
+    PERIODE ANALISIS
+===================== */}
 
 
 
@@ -620,6 +667,8 @@ Periode Analisis
 
 
 
+
+
 <div
 
 className="
@@ -637,8 +686,11 @@ gap-3
 type="date"
 
 
+
 value={
+
 dateRange.startDate
+
 }
 
 
@@ -667,15 +719,17 @@ e.target.value
 
 
 
-
 <Input
 
 
 type="date"
 
 
+
 value={
+
 dateRange.endDate
+
 }
 
 
@@ -700,6 +754,144 @@ e.target.value
 />
 
 
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* =====================
+    PERIODE PEMBANDING
+===================== */}
+
+
+
+<div
+
+className="
+space-y-2
+"
+
+>
+
+
+<label
+
+className="
+text-sm
+font-medium
+"
+
+>
+
+Periode Pembanding
+
+</label>
+
+
+
+
+
+
+
+<div
+
+className="
+grid
+grid-cols-2
+gap-3
+"
+
+>
+
+
+<Input
+
+
+type="date"
+
+
+
+value={
+
+comparisonRange.startDate
+
+}
+
+
+
+onChange={(e)=>
+
+
+onComparisonRangeChange({
+
+...comparisonRange,
+
+startDate:
+e.target.value
+
+})
+
+
+}
+
+
+
+/>
+
+
+
+
+
+
+<Input
+
+
+type="date"
+
+
+
+value={
+
+comparisonRange.endDate
+
+}
+
+
+
+onChange={(e)=>
+
+
+onComparisonRangeChange({
+
+...comparisonRange,
+
+endDate:
+e.target.value
+
+})
+
+
+}
+
+
+
+/>
 
 
 
@@ -757,7 +949,9 @@ selected.length===0
 
 
 onClick={
+
 onGenerate
+
 }
 
 
@@ -773,6 +967,7 @@ Generate Laporan
 
 
 </div>
+
 
 
 

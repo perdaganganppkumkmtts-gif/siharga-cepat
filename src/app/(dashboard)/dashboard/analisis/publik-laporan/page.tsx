@@ -13,7 +13,7 @@ import {
 export const metadata = {
 
   title:
-    "Publikasi Laporan Harga Komoditas",
+    "Publikasi Laporan Harga Barang Kebutuhan Pokok",
 
   description:
     "Publikasi laporan perkembangan harga barang kebutuhan pokok SIHARGA CEPAT"

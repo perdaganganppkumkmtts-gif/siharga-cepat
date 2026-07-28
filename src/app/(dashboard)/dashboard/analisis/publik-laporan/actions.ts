@@ -112,21 +112,15 @@ function getPreviousDateRange(
 
 export async function getTrendAnalysis(
   commodityIds:string[],
-  startDate:string,
-  endDate:string
+  analysisStart:string,
+  analysisEnd:string,
+  comparisonStart:string,
+  comparisonEnd:string
 ){
 
 
   const supabase =
     await createClient()
-
-
-
-  const previousRange =
-    getPreviousDateRange(
-      startDate,
-      endDate
-    )
 
 
 
@@ -235,19 +229,34 @@ export async function getTrendAnalysis(
 
 
 
+
+
+  // ==========================
+  // AMBIL DATA PERIODE ANALISIS
+  // ==========================
+
   const currentData =
     await fetchData(
-      startDate,
-      endDate
+      analysisStart,
+      analysisEnd
     )
 
 
+
+
+
+
+  // ==========================
+  // AMBIL DATA PERIODE PEMBANDING
+  // ==========================
 
   const previousData =
     await fetchData(
-      previousRange.mulai,
-      previousRange.sampai
+      comparisonStart,
+      comparisonEnd
     )
+
+
 
 
 
@@ -261,6 +270,10 @@ export async function getTrendAnalysis(
 
   const groupedPrevious =
     new Map<string,any[]>()
+
+
+
+
 
 
 
@@ -284,6 +297,7 @@ export async function getTrendAnalysis(
       }
 
 
+
       groupedCurrent
       .get(
         item.komoditas_id
@@ -293,6 +307,9 @@ export async function getTrendAnalysis(
 
     }
   )
+
+
+
 
 
 
@@ -315,6 +332,7 @@ export async function getTrendAnalysis(
         )
 
       }
+
 
 
       groupedPrevious
@@ -342,6 +360,9 @@ export async function getTrendAnalysis(
 
 
 
+
+
+
   for(
     const [
       commodityId,
@@ -363,7 +384,10 @@ export async function getTrendAnalysis(
 
 
 
+
+
     const historyCurrent =
+
       rows.map(
         item=>({
 
@@ -402,7 +426,6 @@ export async function getTrendAnalysis(
             ??
             null
 
-
         })
       )
 
@@ -411,7 +434,11 @@ export async function getTrendAnalysis(
 
 
 
+
+
+
     const historyPrevious =
+
       previousRows.map(
         item=>({
 
@@ -450,9 +477,10 @@ export async function getTrendAnalysis(
             ??
             null
 
-
         })
       )
+
+
 
 
 
@@ -469,7 +497,11 @@ export async function getTrendAnalysis(
 
 
 
+
+
+
     const analysis =
+
       analyzeCommodityTrend(
 
         historyCurrent,
@@ -479,31 +511,53 @@ export async function getTrendAnalysis(
 
         {
 
-          mulai:startDate,
+          mulai:
+            analysisStart,
 
-          sampai:endDate
+          sampai:
+            analysisEnd
 
         },
 
 
-        previousRange
+        {
+
+          mulai:
+            comparisonStart,
+
+          sampai:
+            comparisonEnd
+
+        }
 
       )
 
+
+
+
+
+
+
+
     const narrative =
-        generateTrendNarrative({
 
-            nama:
-            commodity.nama,
+      generateTrendNarrative({
 
-
-            satuan:
-            commodity.satuan,
+        nama:
+          commodity.nama,
 
 
-            ...analysis
+        satuan:
+          commodity.satuan,
 
-        })
+
+        ...analysis
+
+      })
+
+
+
+
 
 
 
@@ -511,34 +565,39 @@ export async function getTrendAnalysis(
 
     result.push({
 
-id:
-commodityId,
-
-nama:
-commodity.nama,
-
-satuan:
-commodity.satuan,
+      id:
+        commodityId,
 
 
-history:
-historyCurrent,
+      nama:
+        commodity.nama,
 
 
-historyPrevious:
-historyPrevious,
+      satuan:
+        commodity.satuan,
 
 
-analysis,
+      history:
+        historyCurrent,
 
 
-narrative
+      historyPrevious:
+        historyPrevious,
 
-})
+
+      analysis,
+
+
+      narrative
+
+    })
 
 
 
   }
+
+
+
 
 
 
@@ -561,7 +620,9 @@ interface PublishLaporanProps {
 
   createdBy:string
 
-  cover: File
+  deskripsi:string
+
+  cover:File
 
   data:any[]
 
@@ -579,6 +640,8 @@ export async function publishLaporan({
 judul,
 
 createdBy,
+
+deskripsi,
 
 cover,
 
@@ -835,43 +898,30 @@ await supabase
 
 .insert({
 
-
-
 judul,
-
-
 
 slug,
 
+jenis:"laporan",
 
-
-jenis:
-"laporan",
-
-gambar:
-coverUrl,
-
+gambar:coverUrl,
 
 ringkasan:
-`Laporan perkembangan harga barang kebutuhan pokok periode ${first.periodeAnalisis.mulai} sampai ${first.periodeAnalisis.sampai}`,
+deskripsi.length > 180
+? deskripsi.substring(0,180) + "..."
+: deskripsi,
 
-
+konten:
+deskripsi,
 
 created_by:
 createdBy,
 
-
-
 status:
 "published",
 
-
-
 published_at:
-new Date()
-.toISOString()
-
-
+new Date().toISOString()
 
 })
 

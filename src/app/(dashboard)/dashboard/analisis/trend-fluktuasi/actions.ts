@@ -113,7 +113,9 @@ function getPreviousDateRange(
 export async function getTrendAnalysis(
   commodityIds:string[],
   startDate:string,
-  endDate:string
+  endDate:string,
+  comparisonStartDate:string,
+  comparisonEndDate:string
 ){
 
 
@@ -470,25 +472,33 @@ export async function getTrendAnalysis(
 
 
     const analysis =
-      analyzeCommodityTrend(
+analyzeCommodityTrend(
 
-        historyCurrent,
+ historyCurrent,
 
-        historyPrevious,
-
-
-        {
-
-          mulai:startDate,
-
-          sampai:endDate
-
-        },
+ historyPrevious,
 
 
-        previousRange
+ {
 
-      )
+ mulai:startDate,
+
+ sampai:endDate
+
+ },
+
+
+ {
+
+ mulai:
+ comparisonStartDate,
+
+ sampai:
+ comparisonEndDate
+
+ }
+
+)
 
     const narrative =
         generateTrendNarrative({

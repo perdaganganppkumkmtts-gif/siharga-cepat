@@ -54,21 +54,33 @@ export default function TrendFluktuasiContent({
 
 
 
-  const [dateRange, setDateRange] =
-    useState<DateRange>({
+  const [analysisRange,setAnalysisRange] =
+useState<DateRange>({
 
-      startDate:
-        thirtyDaysAgo
-          .toISOString()
-          .slice(0,10),
+ startDate:
+ thirtyDaysAgo
+ .toISOString()
+ .slice(0,10),
+
+ endDate:
+ today
+ .toISOString()
+ .slice(0,10)
+
+})
 
 
-      endDate:
-        today
-          .toISOString()
-          .slice(0,10),
 
-    })
+const [comparisonRange,setComparisonRange] =
+useState<DateRange>({
+
+ startDate:
+ "",
+
+ endDate:
+ ""
+
+})
 
 
 
@@ -119,13 +131,17 @@ export default function TrendFluktuasiContent({
       const data =
         await getTrendAnalysis(
 
-          selectedCommodityIds,
+ selectedCommodityIds,
 
-          dateRange.startDate,
+ analysisRange.startDate,
 
-          dateRange.endDate
+ analysisRange.endDate,
 
-        )
+ comparisonRange.startDate,
+
+ comparisonRange.endDate
+
+)
 
 
 
@@ -176,36 +192,36 @@ export default function TrendFluktuasiContent({
 
       <TrendFilter
 
-        commodities={
-          commodities
-        }
+commodities={commodities}
+
+selected={selectedCommodityIds}
 
 
-        selected={
-          selectedCommodityIds
-        }
+analysisRange={analysisRange}
+
+comparisonRange={comparisonRange}
 
 
-        dateRange={
-          dateRange
-        }
+onSelectedChange={
+setSelectedCommodityIds
+}
 
 
-        onSelectedChange={
-          setSelectedCommodityIds
-        }
+onAnalysisChange={
+setAnalysisRange
+}
 
 
-        onDateRangeChange={
-          setDateRange
-        }
+onComparisonChange={
+setComparisonRange
+}
 
 
-        onAnalyze={
-          handleAnalyze
-        }
+onAnalyze={
+handleAnalyze
+}
 
-      />
+/>
 
 
 

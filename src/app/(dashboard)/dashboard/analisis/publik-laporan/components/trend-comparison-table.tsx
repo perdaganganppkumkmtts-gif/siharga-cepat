@@ -1,296 +1,169 @@
 "use client"
 
-
 interface Props {
-
-  data:any
-
+  data: any
 }
-
-
 
 export function TrendComparisonTable({
-  data
-}:Props){
+  data,
+}: Props) {
+  const current = data.history ?? []
 
+  const previous = data.historyPrevious ?? []
 
-const current =
-data.history ?? []
+  // Ambil jumlah baris terbanyak
+  const maxLength = Math.max(
+    current.length,
+    previous.length
+  )
 
+  return (
+    <div
+      className="
+      rounded-xl
+      border
+      overflow-hidden
+      "
+    >
+      <table
+        className="
+        w-full
+        text-sm
+        "
+      >
+        <thead
+          className="
+          bg-muted
+          "
+        >
+          <tr>
+            <th
+              className="
+              p-3
+              text-left
+              "
+            >
+              Tanggal Periode Analisis
+            </th>
 
-const previous =
-data.historyPrevious ?? []
+            <th
+              className="
+              p-3
+              text-left
+              "
+            >
+              Harga Periode Analisis
+            </th>
 
+            <th
+              className="
+              p-3
+              text-left
+              "
+            >
+              Tanggal Periode Pembanding
+            </th>
 
+            <th
+              className="
+              p-3
+              text-left
+              "
+            >
+              Harga Periode Pembanding
+            </th>
+          </tr>
+        </thead>
 
-// ambil jumlah baris terbanyak
-const maxLength =
-Math.max(
-  current.length,
-  previous.length
-)
+        <tbody>
+          {Array.from({
+            length: maxLength,
+          }).map((_, index) => {
+            const currentItem = current[index]
 
+            const previousItem = previous[index]
 
+            return (
+              <tr
+                key={index}
+                className="
+                border-t
+                "
+              >
+                {/* Tanggal Analisis */}
+                <td
+                  className="
+                  p-3
+                  text-left
+                  "
+                >
+                  {currentItem
+                    ? formatTanggal(currentItem.time)
+                    : "-"}
+                </td>
 
-return (
+                {/* Harga Analisis */}
+                <td
+                  className="
+                  p-3
+                  text-left
+                  font-medium
+                  "
+                >
+                  {currentItem
+                    ? rupiah(currentItem.value)
+                    : "-"}
+                </td>
 
-<div
-className="
-rounded-xl
-border
-overflow-hidden
-"
->
+                {/* Tanggal Pembanding */}
+                <td
+                  className="
+                  p-3
+                  text-left
+                  "
+                >
+                  {previousItem
+                    ? formatTanggal(previousItem.time)
+                    : "-"}
+                </td>
 
-
-<table
-className="
-w-full
-text-sm
-"
->
-
-
-<thead
-className="
-bg-muted
-"
->
-
-<tr>
-
-<th
-className="
-p-3
-text-left
-"
->
-Tanggal
-</th>
-
-
-<th
-className="
-p-3
-text-right
-"
->
-Periode Analisis
-</th>
-
-
-<th
-className="
-p-3
-text-right
-"
->
-Periode Pembanding
-</th>
-
-
-</tr>
-
-</thead>
-
-
-
-
-<tbody>
-
-
-{
-
-Array.from(
-{
-length:maxLength
+                {/* Harga Pembanding */}
+                <td
+                  className="
+                  p-3
+                  text-left
+                  "
+                >
+                  {previousItem
+                    ? rupiah(previousItem.value)
+                    : "-"}
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
 }
-
-).map(
-(_,index)=>{
-
-
-const currentItem =
-current[index]
-
-
-const previousItem =
-previous[index]
-
-
-
-return (
-
-<tr
-key={index}
-className="
-border-t
-"
->
-
-
-
-{/* TANGGAL */}
-
-<td
-className="
-p-3
-"
->
-
-{
-
-currentItem
-
-?
-
-formatTanggal(
-currentItem.time
-)
-
-:
-
-previousItem
-
-?
-
-formatTanggal(
-previousItem.time
-)
-
-:
-
-"-"
-
-}
-
-</td>
-
-
-
-
-
-{/* PERIODE ANALISIS */}
-
-<td
-className="
-p-3
-text-right
-font-medium
-"
->
-
-{
-
-currentItem
-
-?
-
-rupiah(
-currentItem.value
-)
-
-:
-
-"-"
-
-}
-
-</td>
-
-
-
-
-
-{/* PERIODE PEMBANDING */}
-
-<td
-className="
-p-3
-text-right
-"
->
-
-{
-
-previousItem
-
-?
-
-rupiah(
-previousItem.value
-)
-
-:
-
-"-"
-
-}
-
-</td>
-
-
-
-</tr>
-
-)
-
-
-}
-
-)
-
-}
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-)
-
-}
-
-
-
-
 
 function formatTanggal(
-tanggal:string
-){
-
-return new Date(
-tanggal
-)
-.toLocaleDateString(
-"id-ID",
-{
-day:"numeric",
-month:"long",
-year:"numeric"
+  tanggal: string
+) {
+  return new Date(tanggal).toLocaleDateString(
+    "id-ID",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  )
 }
-)
-
-}
-
-
-
-
 
 function rupiah(
-value:number
-){
-
-return (
-
-`Rp ${Math.round(value)
-.toLocaleString("id-ID")}`
-
-)
-
+  value: number
+) {
+  return `Rp ${Math.round(value).toLocaleString(
+    "id-ID"
+  )}`
 }

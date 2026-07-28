@@ -1,755 +1,380 @@
 "use client"
 
-
 interface Props {
-
-data:any[]
-
+  data: any[]
 }
-
-
-
 
 function rupiah(
-value:number|null|undefined
-){
+  value: number | null | undefined
+) {
+  if (value === null || value === undefined) {
+    return "-"
+  }
 
-if(
-value===null ||
-value===undefined
-){
-
-return "-"
-
+  return (
+    "Rp " +
+    Math.round(value).toLocaleString("id-ID")
+  )
 }
-
-
-return (
-
-"Rp" +
-Math.round(value)
-.toLocaleString(
-"id-ID"
-)
-
-)
-
-}
-
-
-
-
-
 
 function formatPercent(
-value:number
-){
+  value: number
+) {
+  if (value > 0) {
+    return "+" + value.toFixed(2) + "%"
+  }
 
-if(value>0){
-
-return (
-"+"+
-value.toFixed(2)
-+
-"%"
-)
-
+  return value.toFixed(2) + "%"
 }
-
-
-return (
-value.toFixed(2)
-+
-"%"
-)
-
-}
-
-
-
-
-
-
 
 export function ReportTable({
+  data,
+}: Props) {
 
-data
+  if (!data || data.length === 0) {
+    return null
+  }
 
-}:Props){
+  return (
 
+    <div
+      className="
+      rounded-xl
+      border
+      overflow-x-auto
+      "
+    >
 
+      <table
+        className="
+        w-full
+        text-sm
+        "
+      >
 
-if(
-!data ||
-data.length===0
-){
+        <thead
+          className="
+          bg-muted
+          "
+        >
 
-return null
+          <tr>
 
-}
+            <th className="p-3 text-left">
+              No
+            </th>
 
+            <th className="p-3 text-left">
+              Komoditas
+            </th>
 
+            <th className="p-3 text-left">
+              Rerata Harga Periode Pembanding
+            </th>
 
+            <th className="p-3 text-left">
+              Rerata Harga Periode Analisis
+            </th>
 
+            <th className="p-3 text-left">
+              Harga Terakhir Periode Analisis
+            </th>
 
-return (
+            <th className="p-3 text-left">
+              Perubahan
+            </th>
 
+            <th className="p-3 text-left">
+              Tren
+            </th>
 
-<div
+            <th className="p-3 text-left">
+              Tingkat Fluktuasi
+            </th>
 
-className="
-rounded-xl
-border
-overflow-hidden
-"
+            <th className="p-3 text-left">
+              HAP
+            </th>
 
->
+            <th className="p-3 text-left">
+              HET
+            </th>
 
+          </tr>
 
-<table
+        </thead>
 
-className="
-w-full
-text-sm
-"
+        <tbody>
 
->
+          {
 
+            data.map((item, index) => {
 
-<thead
+              const analysis = item.analysis
 
-className="
-bg-muted
-"
+              return (
 
->
+                <tr
+                  key={item.id}
+                  className="border-t"
+                >
 
+                  <td className="p-3">
+                    {index + 1}
+                  </td>
 
-<tr>
+                  <td className="p-3 font-medium">
+                    {item.nama}
+                  </td>
 
+                  {/* =========================
+                      RERATA PEMBANDING
+                  ========================= */}
+
+                  <td
+                    className="
+                    p-3
+                    text-left
+                    "
+                  >
+
+                    {
+                      rupiah(
+                        analysis.perbandingan.rataRataSebelumnya
+                      )
+                    }
+
+                    {" / "}
+
+                    {item.satuan}
+
+                  </td>
+
+                  {/* =========================
+                      RERATA ANALISIS
+                  ========================= */}
+
+                  <td
+                    className="
+                    p-3
+                    text-left
+                    "
+                  >
+
+                    {
+                      rupiah(
+                        analysis.perkembangan.rataRata
+                      )
+                    }
+
+                    {" / "}
+
+                    {item.satuan}
+
+                  </td>
+
+                  {/* =========================
+                      HARGA TERKINI
+                  ========================= */}
+
+                  <td
+                    className="
+                    p-3
+                    text-left
+                    "
+                  >
+
+                    {
+                      rupiah(
+                        analysis.perkembangan.hargaAkhir
+                      )
+                    }
+
+                    {" / "}
+
+                    {item.satuan}
+
+                  </td>
+
+                  {/* =========================
+                      PERUBAHAN
+                  ========================= */}
+
+                  <td
+                    className={`
+                      p-3
+                      text-left
+                      font-medium
+
+                      ${
+                        analysis.perbandingan.perubahanPersen > 0
+                          ? "text-red-600"
+                          : analysis.perbandingan.perubahanPersen < 0
+                          ? "text-green-600"
+                          : "text-muted-foreground"
+                      }
+                    `}
+                  >
+
+                    {
+                      formatPercent(
+                        analysis.perbandingan.perubahanPersen
+                      )
+                    }
+
+                  </td>
 
-<th
-className="
-p-3
-text-left
-"
->
+                  {/* =========================
+                      TREND
+                  ========================= */}
 
-No
+                  <td className="p-3 text-left">
 
-</th>
+                    <span
+                      className={`
+                        rounded-full
+                        px-2
+                        py-1
+                        text-xs
+                        font-medium
 
+                        ${
+                          analysis.perbandingan.trend === "Naik"
+                            ? "bg-red-100 text-red-700"
+                            : analysis.perbandingan.trend === "Turun"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-blue-100 text-blue-700"
+                        }
+                      `}
+                    >
+
+                      {analysis.perbandingan.trend}
+
+                    </span>
 
+                  </td>
 
-<th
-className="
-p-3
-text-left
-"
->
+                  {/* =========================
+                      FLUKTUASI
+                  ========================= */}
 
-Komoditas
+                  <td className="p-3 text-left">
 
-</th>
+                    <span
+                      className={`
+                        rounded-full
+                        px-2
+                        py-1
+                        text-xs
 
+                        ${
+                          analysis.fluktuasi.kategori === "Tinggi"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : analysis.fluktuasi.kategori === "Sedang"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-green-100 text-green-700"
+                        }
+                      `}
+                    >
 
+                      {analysis.fluktuasi.kategori}
 
+                    </span>
 
-<th
-className="
-p-3
-text-right
-"
->
+                  </td>
 
-Harga Rata-rata
+                  {/* =========================
+                      STATUS HAP
+                  ========================= */}
 
-</th>
+                  <td className="p-3 text-left">
 
+                    {
 
+                      analysis.statusHAP ?
 
+                        <span
+                          className={`
+                            rounded-full
+                            px-2
+                            py-1
+                            text-xs
 
-<th
-className="
-p-3
-text-right
-"
->
+                            ${
+                              analysis.statusHAP === "Di atas HAP"
+                                ? "bg-red-100 text-red-700"
+                                : analysis.statusHAP === "Di bawah HAP"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-blue-100 text-blue-700"
+                            }
+                          `}
+                        >
 
-Harga Terkini
+                          {analysis.statusHAP}
 
-</th>
+                        </span>
 
+                        :
 
+                        "-"
 
+                    }
 
+                  </td>
 
-<th
-className="
-p-3
-text-right
-"
->
+                  {/* =========================
+                      STATUS HET
+                  ========================= */}
 
-Perubahan
+                  <td className="p-3 text-left">
 
-</th>
+                    {
 
+                      analysis.statusHET ?
 
+                        <span
+                          className={`
+                            rounded-full
+                            px-2
+                            py-1
+                            text-xs
 
+                            ${
+                              analysis.statusHET === "Di atas HET"
+                                ? "bg-red-100 text-red-700"
+                                : analysis.statusHET === "Di bawah HET"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-blue-100 text-blue-700"
+                            }
+                          `}
+                        >
 
+                          {analysis.statusHET}
 
-<th
-className="
-p-3
-text-center
-"
->
+                        </span>
 
-Trend
+                        :
 
-</th>
+                        "-"
 
+                    }
 
+                  </td>
 
+                </tr>
 
+              )
 
-<th
-className="
-p-3
-text-center
-"
->
+            })
 
-Fluktuasi
+          }
 
-</th>
+        </tbody>
 
+      </table>
 
+    </div>
 
-
-
-<th
-className="
-p-3
-text-center
-"
->
-
-HAP
-
-</th>
-
-
-
-
-
-<th
-className="
-p-3
-text-center
-"
->
-
-HET
-
-</th>
-
-
-
-</tr>
-
-
-</thead>
-
-
-
-
-
-
-<tbody>
-
-
-{
-
-data.map(
-
-(item,index)=>{
-
-
-const analysis =
-item.analysis
-
-
-
-return (
-
-
-<tr
-
-key={item.id}
-
-className="
-border-t
-"
-
->
-
-
-<td
-
-className="
-p-3
-"
-
->
-
-{
-index+1
-}
-
-</td>
-
-
-
-
-
-<td
-
-className="
-p-3
-font-medium
-"
-
->
-
-{
-item.nama
-}
-
-</td>
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-right
-"
-
->
-
-{
-rupiah(
-analysis.perkembangan.rataRata
-)
-}
-
-/
-
-{
-item.satuan
-}
-
-</td>
-
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-right
-"
-
->
-
-{
-rupiah(
-analysis.perkembangan.hargaAkhir
-)
-}
-
-/
-
-{
-item.satuan
-}
-
-</td>
-
-
-
-
-
-
-
-
-<td
-
-className={`
-p-3
-text-right
-font-medium
-
-${
-analysis.perbandingan.perubahanPersen > 0
-
-?
-
-"text-red-600"
-
-:
-
-analysis.perbandingan.perubahanPersen < 0
-
-?
-
-"text-green-600"
-
-:
-
-"text-muted-foreground"
-
-}
-
-`}
-
->
-
-{
-formatPercent(
-analysis.perbandingan.perubahanPersen
-)
-}
-
-</td>
-
-
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-center
-"
-
->
-
-<span
-
-className={`
-
-rounded-full
-px-2
-py-1
-text-xs
-font-medium
-
-
-${
-analysis.perbandingan.trend==="Naik"
-
-?
-
-"bg-red-100 text-red-700"
-
-:
-
-analysis.perbandingan.trend==="Turun"
-
-?
-
-"bg-green-100 text-green-700"
-
-:
-
-"bg-blue-100 text-blue-700"
-
-}
-
-
-`}
-
->
-
-
-{
-analysis.perbandingan.trend
-}
-
-
-</span>
-
-
-</td>
-
-
-
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-center
-"
-
->
-
-
-<span
-
-className={`
-
-rounded-full
-px-2
-py-1
-text-xs
-
-
-${
-analysis.fluktuasi.kategori==="Tinggi"
-
-?
-
-"bg-yellow-100 text-yellow-700"
-
-:
-
-analysis.fluktuasi.kategori==="Sedang"
-
-?
-
-"bg-orange-100 text-orange-700"
-
-:
-
-"bg-green-100 text-green-700"
-
-}
-
-
-`}
-
->
-
-
-{
-analysis.fluktuasi.kategori
-}
-
-
-</span>
-
-
-</td>
-
-
-
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-center
-"
-
->
-
-
-{
-analysis.statusHAP
-
-?
-
-<span
-
-className={`
-
-rounded-full
-px-2
-py-1
-text-xs
-
-
-${
-analysis.statusHAP==="Di atas HAP"
-
-?
-
-"bg-red-100 text-red-700"
-
-:
-
-analysis.statusHAP==="Di bawah HAP"
-
-?
-
-"bg-green-100 text-green-700"
-
-:
-
-"bg-blue-100 text-blue-700"
-
-}
-
-`}
-
->
-
-
-{
-analysis.statusHAP
-}
-
-
-</span>
-
-
-:
-
-"-"
-
-
-}
-
-
-
-</td>
-
-
-
-
-
-
-
-
-
-<td
-
-className="
-p-3
-text-center
-"
-
->
-
-
-{
-
-analysis.statusHET
-
-?
-
-<span
-
-className={`
-
-rounded-full
-px-2
-py-1
-text-xs
-
-
-${
-analysis.statusHET==="Di atas HET"
-
-?
-
-"bg-red-100 text-red-700"
-
-:
-
-analysis.statusHET==="Di bawah HET"
-
-?
-
-"bg-green-100 text-green-700"
-
-:
-
-"bg-blue-100 text-blue-700"
-
-}
-
-`}
-
->
-
-
-{
-analysis.statusHET
-}
-
-
-</span>
-
-
-:
-
-"-"
-
-
-}
-
-
-
-</td>
-
-
-
-
-
-</tr>
-
-
-)
-
-
-}
-
-)
-
-
-}
-
-
-
-</tbody>
-
-
-
-</table>
-
-
-
-</div>
-
-
-)
-
+  )
 
 }

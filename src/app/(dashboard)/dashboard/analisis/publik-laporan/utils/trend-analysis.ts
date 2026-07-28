@@ -1,12 +1,19 @@
 export interface CommodityPricePoint {
+
   time:string
+
   value:number
 
   het?:number|null
+
   hap?:number|null
+
   hap_bawah?:number|null
+
   hap_atas?:number|null
+
 }
+
 
 
 export interface PeriodRange {
@@ -16,6 +23,8 @@ export interface PeriodRange {
   sampai:string
 
 }
+
+
 
 
 
@@ -30,31 +39,26 @@ export interface CommodityAnalysisResult {
 
   perkembangan:{
 
-  hargaAwal:number
+    hargaAwal:number
 
-  hargaAkhir:number
+    hargaAkhir:number
 
-  hargaTertinggi:number
+    hargaTertinggi:number
 
-  hargaTerendah:number
+    hargaTerendah:number
 
-  rataRata:number
-
-
-  // HAP tunggal
-  hap:number|null
+    rataRata:number
 
 
-  // HAP rentang
-  hap_bawah:number|null
+    hap:number|null
 
-  hap_atas:number|null
+    hap_bawah:number|null
 
+    hap_atas:number|null
 
-  // HET tunggal
-  het:number|null
+    het:number|null
 
-}
+  }
 
 
 
@@ -118,259 +122,359 @@ export interface CommodityAnalysisResult {
 
   jumlahData:number
 
+
 }
 
+
+
+
+
+// ===============================
+// HELPER
+// ===============================
 
 
 function average(values:number[]){
 
- if(!values.length)
- return 0
+
+  if(values.length===0)
+    return 0
 
 
- return (
- values.reduce(
-  (a,b)=>a+b,
-  0
- )
- /
- values.length
- )
+  return (
+
+    values.reduce(
+      (a,b)=>a+b,
+      0
+    )
+    /
+    values.length
+
+  )
 
 }
+
+
 
 
 
 function standardDeviation(values:number[]){
 
- if(values.length<=1)
- return 0
+
+  if(values.length<=1)
+    return 0
 
 
- const avg=average(values)
+  const avg =
+    average(values)
 
 
- const variance =
- values.reduce(
-  (total,value)=>
-  total+
-  Math.pow(
-   value-avg,
-   2
-  ),
- 0
- )
- /
- values.length
+
+  const variance =
+
+    values.reduce(
+
+      (total,value)=>
+
+        total +
+        Math.pow(
+          value - avg,
+          2
+        ),
+
+      0
+
+    )
+    /
+    values.length
 
 
- return Math.sqrt(variance)
+
+  return Math.sqrt(
+    variance
+  )
 
 }
+
+
 
 
 
 function coefficientVariation(
-std:number,
-mean:number
+  std:number,
+  mean:number
 ){
 
- if(mean===0)
- return 0
+
+  if(mean===0)
+    return 0
 
 
- return (
-  std /
-  mean
- )
- *
- 100
+
+  return (
+
+    std /
+    mean
+
+  )
+  *
+  100
+
 
 }
+
+
 
 
 
 function classifyTrend(
-percent:number
+  percent:number
 ){
 
- if(percent>0.5)
- return "Naik"
+
+  if(percent > 0.5)
+    return "Naik"
 
 
- if(percent<-0.5)
- return "Turun"
+  if(percent < -0.5)
+    return "Turun"
 
 
- return "Stabil"
+  return "Stabil"
 
 }
+
+
 
 
 
 function classifyFluctuation(
-cv:number
+  cv:number
 ){
 
- if(cv<5)
- return "Rendah"
+
+  if(cv < 5)
+    return "Rendah"
 
 
- if(cv<10)
- return "Sedang"
+  if(cv < 10)
+    return "Sedang"
 
 
- return "Tinggi"
+  return "Tinggi"
+
 
 }
+
+
+
+
+
 
 
 
 function analyzeHAP(
-harga:number,
-bawah:number|null|undefined,
-atas:number|null|undefined
+  harga:number,
+  bawah:number|null|undefined,
+  atas:number|null|undefined
 ){
 
 
- if(
- bawah==null ||
- atas==null
- ){
 
- return {
-  status:null,
-  selisih:null
- }
+  if(
+    bawah == null ||
+    atas == null
+  ){
 
- }
+    return {
 
+      status:null,
 
- if(harga<bawah){
+      selisih:null
 
- return {
+    }
 
- status:"Di bawah HAP" as const,
-
- selisih:
- (
-  (bawah-harga)
-  /
-  bawah
- )
- *
- 100
-
- }
-
- }
+  }
 
 
 
- if(harga>atas){
 
- return {
-
- status:"Di atas HAP" as const,
-
- selisih:
- (
-  (harga-atas)
-  /
-  atas
- )
- *
- 100
-
- }
-
- }
+  if(harga < bawah){
 
 
+    return {
 
- return {
+      status:
+      "Di bawah HAP" as const,
 
- status:"Dalam zona HAP" as const,
 
- selisih:0
+      selisih:
 
- }
+      (
+
+        (bawah-harga)
+        /
+        bawah
+
+      )
+      *
+      100
+
+    }
+
+
+  }
+
+
+
+
+  if(harga > atas){
+
+
+    return {
+
+
+      status:
+      "Di atas HAP" as const,
+
+
+      selisih:
+
+      (
+
+        (harga-atas)
+        /
+        atas
+
+      )
+      *
+      100
+
+
+    }
+
+
+  }
+
+
+
+
+
+  return {
+
+    status:
+    "Dalam zona HAP" as const,
+
+
+    selisih:0
+
+  }
 
 
 }
+
+
+
 
 
 
 
 function analyzeHET(
-harga:number,
-het:number|null|undefined
+  harga:number,
+  het:number|null|undefined
 ){
 
 
- if(het==null){
 
- return {
+  if(het==null){
 
- status:null,
+    return {
 
- selisih:null
+      status:null,
 
- }
+      selisih:null
 
- }
+    }
 
-
-
- if(harga>het){
-
- return {
-
- status:"Di atas HET" as const,
-
- selisih:
- (
-  (harga-het)
-  /
-  het
- )
- *
- 100
-
- }
-
- }
+  }
 
 
 
- if(harga<het){
-
- return {
-
- status:"Di bawah HET" as const,
-
- selisih:
- (
-  (het-harga)
-  /
-  het
- )
- *
- 100
-
- }
-
- }
 
 
+  if(harga > het){
 
- return {
 
- status:"Sesuai HET" as const,
+    return {
 
- selisih:0
+      status:
+      "Di atas HET" as const,
 
- }
+
+      selisih:
+
+      (
+
+        (harga-het)
+        /
+        het
+
+      )
+      *
+      100
+
+
+    }
+
+
+  }
+
+
+
+
+
+  if(harga < het){
+
+
+    return {
+
+
+      status:
+      "Di bawah HET" as const,
+
+
+      selisih:
+
+      (
+
+        (het-harga)
+        /
+        het
+
+      )
+      *
+      100
+
+
+    }
+
+
+  }
+
+
+
+
+
+  return {
+
+    status:
+    "Sesuai HET" as const,
+
+
+    selisih:0
+
+  }
+
 
 }
 
@@ -378,229 +482,425 @@ het:number|null|undefined
 
 
 
+
+
+
+
+
+
+// =====================================
+// ANALISIS KOMODITAS
+// =====================================
+
+
 export function analyzeCommodityTrend(
 
- currentData:CommodityPricePoint[],
 
- previousData:CommodityPricePoint[],
+  currentData:CommodityPricePoint[],
 
- periodeAnalisis:PeriodRange,
 
- periodePembanding:PeriodRange
+  previousData:CommodityPricePoint[],
+
+
+  periodeAnalisis:PeriodRange,
+
+
+  periodePembanding:PeriodRange
+
 
 ):CommodityAnalysisResult {
 
 
 
- const current =
- [
- ...currentData
- ]
- .sort(
- (a,b)=>
- new Date(a.time).getTime()
- -
- new Date(b.time).getTime()
- )
+  const current =
 
+    [...currentData]
 
+    .sort(
 
- const previous =
- [
- ...previousData
- ]
+      (a,b)=>
 
+      new Date(a.time).getTime()
+      -
+      new Date(b.time).getTime()
 
+    )
 
 
- const values =
- current.map(
- item=>item.value
- )
 
 
- const previousValues =
- previous.map(
- item=>item.value
- )
 
+  const previous =
 
+    [...previousData]
 
- const hargaAwal =
- values[0] ?? 0
 
 
-const hargaAkhir =
-  values[values.length - 1] ?? 0
 
 
 
- const rataRata =
- average(values)
 
 
+  const values =
 
- const rataRataSebelumnya =
- average(previousValues)
+    current.map(
 
+      item=>
+      item.value
 
+    )
 
- const perubahanNominal =
- rataRata -
- rataRataSebelumnya
 
 
 
- const perubahanPersen =
- rataRataSebelumnya===0
- ?
- 0
- :
- (
-  perubahanNominal
-  /
-  rataRataSebelumnya
- )
- *
- 100
 
+  const previousValues =
 
+    previous.map(
 
- const std =
- standardDeviation(values)
+      item=>
+      item.value
 
+    )
 
 
- const cv =
- coefficientVariation(
- std,
- rataRata
- )
 
 
 
-const latest =
-  current[current.length - 1]
 
 
+  // ==========================
+  // RERATA PERIODE
+  // ==========================
 
- const hap =
- analyzeHAP(
- hargaAkhir,
- latest?.hap_bawah,
- latest?.hap_atas
- )
 
+  const rataRata =
 
+    average(values)
 
- const het =
- analyzeHET(
- hargaAkhir,
- latest?.het
- )
 
 
+  const rataRataSebelumnya =
 
+    average(previousValues)
 
- return {
 
 
- periodeAnalisis,
 
 
- periodePembanding,
 
+  // ==========================
+  // PERUBAHAN HARGA
+  // ==========================
 
- perkembangan:{
 
-  hargaAwal,
+  const perubahanNominal =
 
-  hargaAkhir,
+    rataRata
+    -
+    rataRataSebelumnya
 
-  hargaTertinggi:
-  Math.max(...values),
 
-  hargaTerendah:
-  Math.min(...values),
 
-  rataRata,
 
-  hap:
-  latest?.hap ?? null,
 
+  const perubahanPersen =
 
-  hap_bawah:
-  latest?.hap_bawah ?? null,
 
+    rataRataSebelumnya === 0
 
-  hap_atas:
-  latest?.hap_atas ?? null,
+    ?
 
+    0
 
-  het:
-  latest?.het ?? null,
+    :
 
-},
+    (
 
+      perubahanNominal
+      /
+      rataRataSebelumnya
 
- perbandingan:{
+    )
+    *
+    100
 
 
- rataRataSebelumnya,
 
 
- perubahanNominal,
 
 
- perubahanPersen,
 
+  // ==========================
+  // PERKEMBANGAN
+  // ==========================
 
- trend:
- classifyTrend(
-  perubahanPersen
- )
 
- },
+  const hargaAwal =
 
+    rataRataSebelumnya
 
- fluktuasi:{
 
 
- standarDeviasi:std,
+  const hargaAkhir =
 
+    rataRata
 
- koefisienVariasi:cv,
 
 
- kategori:
- classifyFluctuation(cv)
 
 
- },
 
 
+  const std =
 
- statusHAP:
- hap.status,
+    standardDeviation(
+      values
+    )
 
 
- statusHET:
- het.status,
 
 
- selisihHAP:
- hap.selisih,
 
+  const cv =
 
- selisihHET:
- het.selisih,
+    coefficientVariation(
 
+      std,
 
- jumlahData:
- values.length
+      rataRata
 
+    )
 
- }
+
+
+
+
+
+  const reference =
+
+    current[
+      current.length - 1
+    ]
+
+
+
+
+
+
+
+
+  const hap =
+
+    analyzeHAP(
+
+      rataRata,
+
+      reference?.hap_bawah,
+
+      reference?.hap_atas
+
+    )
+
+
+
+
+
+
+
+  const het =
+
+    analyzeHET(
+
+      rataRata,
+
+      reference?.het
+
+    )
+
+
+
+
+
+
+
+  return {
+
+
+
+    periodeAnalisis,
+
+
+    periodePembanding,
+
+
+
+
+
+    perkembangan:{
+
+
+      hargaAwal,
+
+
+      hargaAkhir,
+
+
+      hargaTertinggi:
+
+        values.length
+
+        ?
+
+        Math.max(...values)
+
+        :
+
+        0,
+
+
+
+      hargaTerendah:
+
+        values.length
+
+        ?
+
+        Math.min(...values)
+
+        :
+
+        0,
+
+
+
+      rataRata,
+
+
+
+      hap:
+
+      reference?.hap
+      ??
+      null,
+
+
+
+      hap_bawah:
+
+      reference?.hap_bawah
+      ??
+      null,
+
+
+
+      hap_atas:
+
+      reference?.hap_atas
+      ??
+      null,
+
+
+
+      het:
+
+      reference?.het
+      ??
+      null
+
+
+    },
+
+
+
+
+
+
+
+    perbandingan:{
+
+
+      rataRataSebelumnya,
+
+
+      perubahanNominal,
+
+
+      perubahanPersen,
+
+
+
+      trend:
+
+      classifyTrend(
+        perubahanPersen
+      )
+
+
+    },
+
+
+
+
+
+
+
+    fluktuasi:{
+
+
+      standarDeviasi:std,
+
+
+      koefisienVariasi:cv,
+
+
+      kategori:
+
+      classifyFluctuation(
+        cv
+      )
+
+
+    },
+
+
+
+
+
+
+
+    statusHAP:
+
+      hap.status,
+
+
+
+    statusHET:
+
+      het.status,
+
+
+
+    selisihHAP:
+
+      hap.selisih,
+
+
+
+    selisihHET:
+
+      het.selisih,
+
+
+
+    jumlahData:
+
+      values.length
+
+
+
+  }
+
 
 
 }

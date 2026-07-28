@@ -320,7 +320,7 @@ text-muted-foreground
 "
 >
 
-Pembanding:
+Periode Pembanding:
 
 {" "}
 
@@ -398,7 +398,7 @@ md:grid-cols-4
 
 <InfoBox
 
-title="Rata-rata Harga"
+title="Rata-rata Harga Periode Analisis"
 
 value={
 rupiah(
@@ -412,7 +412,7 @@ analysis.perkembangan.rataRata
 
 <InfoBox
 
-title="Harga Tertinggi"
+title="Harga Tertinggi Periode Analisis"
 
 value={
 rupiah(
@@ -426,7 +426,7 @@ analysis.perkembangan.hargaTertinggi
 
 <InfoBox
 
-title="Harga Terendah"
+title="Harga Terendah Periode Analisis"
 
 value={
 rupiah(
@@ -476,7 +476,7 @@ md:grid-cols-2
 
 <InfoBox
 
-title="Tingkat Fluktuasi"
+title="Tingkat Fluktuasi pada Periode Analisis"
 
 value={
 analysis.fluktuasi.kategori
@@ -488,7 +488,7 @@ analysis.fluktuasi.kategori
 
 <InfoBox
 
-title="Koefisien Variasi"
+title="Koefisien Variasi pada  Periode Analisis"
 
 value={
 
@@ -531,7 +531,7 @@ Keterangan Harga
 
 
 <p>
-<b>Harga Terkini:</b>{" "}
+<b>Harga Terakhir pada Periode Analisis:</b>{" "}
 {
 rupiah(
 analysis.perkembangan.hargaAkhir
@@ -586,32 +586,19 @@ analysis.perkembangan.hap_atas
 
 
 <p>
-<b>Status:</b>{" "}
-Harga {data.nama}
-
-{" "}
-
-{
-analysis.statusHAP === "Dalam zona HAP"
-
-?
-
-"berada dalam zona HAP."
-
-:
-
-analysis.statusHAP === "Di atas HAP"
-
-?
-
-`berada di atas HAP sebesar ${analysis.selisihHAP?.toFixed(2)}%.`
-
-:
-
-`berada di bawah HAP sebesar ${analysis.selisihHAP?.toFixed(2)}%.`
-
-}
-
+  <b>Status:</b>{" "}
+  Harga terakhir {data.nama} pada periode{" "}
+  
+    {formatTanggal(analysis.periodeAnalisis.mulai)} s/d{" "}
+    {formatTanggal(analysis.periodeAnalisis.sampai)}
+  {" "}
+  {
+    analysis.statusHAP === "Dalam zona HAP"
+      ? "berada dalam zona HAP."
+      : analysis.statusHAP === "Di atas HAP"
+      ? `berada di atas HAP sebesar ${analysis.selisihHAP?.toFixed(2)}%.`
+      : `berada di bawah HAP sebesar ${analysis.selisihHAP?.toFixed(2)}%.`
+  }
 </p>
 
 </div>

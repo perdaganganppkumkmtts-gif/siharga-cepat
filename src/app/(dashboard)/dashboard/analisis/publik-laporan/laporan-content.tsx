@@ -32,13 +32,6 @@ import {
 } from "./actions"
 
 
-
-
-
-
-
-
-
 interface Props {
 
 
@@ -215,9 +208,29 @@ useState<string[]>([])
 
 const [
 
-dateRange,
+analysisRange,
 
-setDateRange
+setAnalysisRange
+
+]=
+
+useState({
+
+startDate:"",
+
+endDate:""
+
+})
+
+
+
+
+
+const [
+
+comparisonRange,
+
+setComparisonRange
 
 ]=
 
@@ -282,16 +295,20 @@ return
 
 if(
 
-!dateRange.startDate ||
+!analysisRange.startDate ||
 
-!dateRange.endDate
+!analysisRange.endDate ||
+
+!comparisonRange.startDate ||
+
+!comparisonRange.endDate
 
 ){
 
 
 setError(
 
-"Silakan pilih periode laporan."
+"Silakan pilih periode analisis dan periode pembanding."
 
 )
 
@@ -328,17 +345,18 @@ const data =
 await getTrendAnalysis(
 
 
-
 selectedCommodityIds,
 
 
-
-dateRange.startDate,
-
+analysisRange.startDate,
 
 
-dateRange.endDate
+analysisRange.endDate,
 
+
+comparisonRange.startDate,
+
+comparisonRange.endDate
 
 
 )
@@ -460,22 +478,20 @@ setError(null)
 
 await publishLaporan({
 
+  judul:
+  payload.judul,
 
-judul:
-payload.judul,
+  createdBy:
+  payload.createdBy,
 
+  deskripsi:
+  payload.deskripsi,
 
-createdBy:
-payload.createdBy,
+  cover:
+  payload.cover,
 
-
-cover:
-payload.cover,
-
-
-data:
-result
-
+  data:
+  result
 
 })
 
@@ -578,47 +594,21 @@ FILTER LAPORAN
 
 <ReportFilter
 
-
-
 commodities={commodities}
-
-
-
-
 
 selected={selectedCommodityIds}
 
+dateRange={analysisRange}
 
-
-
-
-
-dateRange={dateRange}
-
-
-
-
-
+comparisonRange={comparisonRange}
 
 onSelectedChange={setSelectedCommodityIds}
 
+onDateRangeChange={setAnalysisRange}
 
-
-
-
-
-onDateRangeChange={setDateRange}
-
-
-
-
-
+onComparisonRangeChange={setComparisonRange}
 
 onGenerate={handleGenerate}
-
-
-
-
 
 />
 

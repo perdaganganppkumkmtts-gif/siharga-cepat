@@ -767,16 +767,22 @@ font-semibold
 
 
 <p
+
 className="
 text-xs
 text-muted-foreground
 "
+
 >
+
+Rata-rata:
+
+{" "}
 
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAwal
+item.analysis.perbandingan.rataRataSebelumnya
 )
 
 }
@@ -786,10 +792,11 @@ item.analysis.perbandingan.hargaAwal
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAkhir
+item.analysis.perkembangan.rataRata
 )
 
 }
+
 
 </p>
 
@@ -1013,10 +1020,14 @@ text-muted-foreground
 
 >
 
+Rata-rata:
+
+{" "}
+
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAwal
+item.analysis.perbandingan.rataRataSebelumnya
 )
 
 }
@@ -1026,7 +1037,7 @@ item.analysis.perbandingan.hargaAwal
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAkhir
+item.analysis.perkembangan.rataRata
 )
 
 }

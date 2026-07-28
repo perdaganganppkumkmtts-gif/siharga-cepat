@@ -67,7 +67,17 @@ Math.round(value)
 
 
 
+function formatPercent(
+  value: number
+) {
 
+  if (value > 0) {
+    return `+${value.toFixed(2)}%`
+  }
+
+  return `${value.toFixed(2)}%`
+
+}
 
 
 
@@ -776,7 +786,7 @@ text-muted-foreground
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAwal
+item.analysis.perbandingan.rataRataSebelumnya
 )
 
 }
@@ -786,7 +796,7 @@ item.analysis.perbandingan.hargaAwal
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAkhir
+item.analysis.perkembangan.rataRata
 )
 
 }
@@ -805,7 +815,6 @@ item.analysis.perbandingan.hargaAkhir
 
 
 <div
-
 className="
 rounded-full
 bg-red-100
@@ -815,18 +824,15 @@ text-sm
 font-bold
 text-red-700
 "
-
 >
-
-+
 
 {
 
-item.analysis.perbandingan.perubahanPersen.toFixed(2)
+formatPercent(
+item.analysis.perbandingan.perubahanPersen
+)
 
 }
-
-%
 
 </div>
 
@@ -1016,7 +1022,7 @@ text-muted-foreground
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAwal
+item.analysis.perbandingan.rataRataSebelumnya
 )
 
 }
@@ -1026,11 +1032,10 @@ item.analysis.perbandingan.hargaAwal
 {
 
 rupiah(
-item.analysis.perbandingan.hargaAkhir
+item.analysis.perkembangan.rataRata
 )
 
 }
-
 
 </p>
 
@@ -1060,15 +1065,13 @@ text-green-700
 
 >
 
-
 {
 
-item.analysis.perbandingan.perubahanPersen.toFixed(2)
+formatPercent(
+item.analysis.perbandingan.perubahanPersen
+)
 
 }
-
-%
-
 
 </div>
 

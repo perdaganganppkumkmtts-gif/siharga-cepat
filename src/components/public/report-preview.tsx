@@ -17,8 +17,8 @@ import {
 
 
 import {
-  AnalysisCard
-} from "./analysis-card"
+  AnalysisAccordion
+} from "./analysis-accordion"
 
 
 import {
@@ -330,45 +330,11 @@ Perkembangan dan Fluktuasi Harga Komoditas
 {/* DETAIL ANALISIS KOMODITAS */}
 
 
+<AnalysisAccordion
 
-<div
-
-className="
-space-y-4
-"
-
->
-
-
-{
-
-data.map(
-
-(item)=>(
-
-
-<AnalysisCard
-
-
-key={item.id}
-
-
-data={item}
-
+data={data}
 
 />
-
-
-)
-
-)
-
-
-}
-
-
-
-</div>
 
 
 

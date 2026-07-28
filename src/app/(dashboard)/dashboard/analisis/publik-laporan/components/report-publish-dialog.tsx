@@ -1,25 +1,24 @@
 "use client"
 
-
 import {
   useState
 } from "react"
-
 
 import {
   Button
 } from "@/components/ui/button"
 
-
 import {
   Input
 } from "@/components/ui/input"
-
 
 import {
   Label
 } from "@/components/ui/label"
 
+import {
+  Textarea
+} from "@/components/ui/textarea"
 
 import {
   Dialog,
@@ -29,532 +28,416 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 
-
-
-
-
-
-
-
 interface Props {
 
+  open:boolean
 
-open:boolean
+  onOpenChange:(value:boolean)=>void
 
+  onSubmit:(data:{
 
-onOpenChange:(value:boolean)=>void
+    judul:string
 
+    createdBy:string
 
+    deskripsi:string
 
-onSubmit:(data:{
+    cover:File
 
-judul:string
+  })=>void
 
-createdBy:string
-
-cover:File
-
-})=>void
-
-
-
-loading?:
-boolean
-
+  loading?:boolean
 
 }
-
-
-
-
-
-
-
-
 
 export function ReportPublishDialog({
 
+  open,
 
-open,
+  onOpenChange,
 
+  onSubmit,
 
-onOpenChange,
-
-
-onSubmit,
-
-
-loading=false
-
-
+  loading=false
 
 }:Props){
 
+  const [judul,setJudul]=
+  useState(
+    "Laporan Perkembangan Harga Barang Kebutuhan Pokok"
+  )
 
+  const [createdBy,setCreatedBy]=
+  useState("")
 
+  const [deskripsi,setDeskripsi]=
+  useState("")
 
+  const [cover,setCover]=
+  useState<File | null>(null)
 
+  const [preview,setPreview]=
+  useState("")
 
+  const [error,setError]=
+  useState("")
 
+  function handleSubmit(){
 
-const [judul,setJudul]=
-useState(
-"Laporan Perkembangan Harga Barang Kebutuhan Pokok"
-)
+    setError("")
 
+    if(!judul.trim()){
 
+      setError(
+        "Judul laporan wajib diisi."
+      )
 
+      return
 
+    }
 
+    if(!createdBy.trim()){
 
+      setError(
+        "Dibuat Oleh wajib diisi."
+      )
 
-const [createdBy,setCreatedBy]=
-useState("")
+      return
 
-const [cover,setCover]=
-useState<File | null>(null)
+    }
 
+    if(!deskripsi.trim()){
 
-const [preview,setPreview]=
-useState("")
+      setError(
+        "Deskripsi laporan wajib diisi."
+      )
 
+      return
 
-const [error,setError]=
-useState("")
+    }
 
+    if(!cover){
 
+      setError(
+        "Cover laporan wajib diunggah."
+      )
 
+      return
 
+    }
 
+    onSubmit({
 
+      judul:
+      judul.trim(),
 
-function handleSubmit(){
+      createdBy:
+      createdBy.trim(),
 
+      deskripsi:
+      deskripsi.trim(),
 
-setError("")
+      cover
 
+    })
 
-if(!judul.trim()){
+  }
 
-setError(
-"Judul laporan wajib diisi."
-)
+  function handleClose(
+    value:boolean
+  ){
 
-return
+    if(!value){
 
-}
+      setCreatedBy("")
 
+      setDeskripsi("")
 
+      setCover(null)
 
-if(!createdBy.trim()){
+      setPreview("")
 
-setError(
-"Dibuat Oleh wajib diisi."
-)
+      setError("")
 
-return
+    }
 
-}
+    onOpenChange(value)
 
+  }
 
+  return (
 
-if(!cover){
+    <Dialog
 
-setError(
-"Cover laporan wajib diunggah."
-)
+      open={open}
 
-return
+      onOpenChange={handleClose}
 
-}
+    >
 
+      <DialogContent className="sm:max-w-xl">
 
+        <DialogHeader>
 
-onSubmit({
+          <DialogTitle>
 
-judul:
-judul.trim(),
+            Publikasikan Laporan
 
+          </DialogTitle>
 
-createdBy:
-createdBy.trim(),
+        </DialogHeader>
 
+        <div className="space-y-5">
 
-cover
+          {/* Judul */}
 
-})
+          <div className="space-y-2">
 
+            <Label>
 
-}
+              Judul Laporan
 
+            </Label>
 
+            <Input
 
+              value={judul}
 
+              onChange={(e)=>
 
+                setJudul(
+                  e.target.value
+                )
 
+              }
 
+            />
 
+          </div>
 
-function handleClose(
-value:boolean
-){
+          {/* Dibuat Oleh */}
 
+          <div className="space-y-2">
 
+            <Label>
 
-if(!value){
+              Dibuat Oleh
 
+            </Label>
 
-setCreatedBy("")
+            <Input
 
+              placeholder="Nama penyusun laporan"
 
-}
+              value={createdBy}
 
+              onChange={(e)=>
 
+                setCreatedBy(
+                  e.target.value
+                )
 
-onOpenChange(value)
+              }
 
+            />
 
-}
+          </div>
 
+          {/* Deskripsi */}
 
+          <div className="space-y-2">
 
+            <Label>
 
+              Deskripsi Laporan
 
+            </Label>
 
+            <Textarea
 
+              rows={6}
 
+              placeholder="Contoh: Laporan Perkembangan Harga Bapok Mingguan berdasarkan pantauan di Pasar Inpres SoE"
 
-return (
+              value={deskripsi}
 
+              onChange={(e)=>
 
-<Dialog
+                setDeskripsi(
+                  e.target.value
+                )
 
+              }
 
-open={open}
+            />
 
+          </div>
 
-onOpenChange={handleClose}
+          {/* Cover */}
 
+          <div className="space-y-2">
 
+            <Label>
 
->
+              Cover Laporan
 
+            </Label>
 
-<DialogContent>
+            <Input
 
+              type="file"
 
-
-
-
-<DialogHeader>
-
-
-<DialogTitle>
-
-Publikasikan Laporan
-
-</DialogTitle>
-
-
-</DialogHeader>
-
-
-
-
-
-
-
-
-
-<div className="space-y-4">
-
-
-
-
-
-
-<div>
-
-
-<Label>
-
-Judul Laporan
-
-</Label>
-
-
-
-<Input
-
-
-value={judul}
-
-
-onChange={(e)=>
-
-setJudul(e.target.value)
-
-}
-
-
-/>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div>
-
-
-<Label>
-
-Dibuat Oleh
-
-</Label>
-
-
-
-<Input
-
-
-placeholder="Nama penyusun laporan"
-
-
-value={createdBy}
-
-
-onChange={(e)=>
-
-setCreatedBy(e.target.value)
-
-}
-
-
-/>
-
-
-
-</div>
-<div>
-
-<Label>
-Cover Laporan
-</Label>
-
-
-<Input
-
-type="file"
-
-accept="image/png,image/jpeg,image/jpg,image/webp"
-
-onChange={(e)=>{
-
-
-const file =
-e.target.files?.[0]
-
-
-if(!file) return
-
-
-
-if(
-file.size > 5 * 1024 * 1024
-){
-
-setError(
-"Ukuran gambar maksimal 5 MB."
-)
-
-return
-
-}
-
-
-
-setCover(file)
-
-setPreview(
-URL.createObjectURL(file)
-)
-
-
-}}
-
-/>
-
-
-{
-preview &&
-
-<img
-
-src={preview}
-
-alt="Preview Cover"
-
-className="
-mt-3
-h-48
-w-full
-rounded-lg
-object-cover
-border
+              accept="
+image/png,
+image/jpeg,
+image/jpg,
+image/webp
 "
 
-/>
+              onChange={(e)=>{
 
-}
+                setError("")
 
+                const file =
+                e.target.files?.[0]
 
-</div>
+                if(!file)
+                return
 
+                if(
+                  file.size >
+                  5 * 1024 * 1024
+                ){
 
+                  setError(
+                    "Ukuran gambar maksimal 5 MB."
+                  )
 
+                  return
 
+                }
 
+                setCover(file)
 
+                setPreview(
+                  URL.createObjectURL(file)
+                )
 
+              }}
 
-</div>
+            />
 
+            {
 
+              preview &&
 
+              <img
 
+                src={preview}
 
+                alt="Preview Cover"
 
+                className="
+                mt-2
+                h-56
+                w-full
+                rounded-lg
+                border
+                object-cover
+                "
 
+              />
 
-{
-error &&
+            }
 
-<div
+          </div>
 
-className="
-rounded-md
-bg-destructive/10
-p-3
-text-sm
-text-destructive
-"
+        </div>
 
->
+        {
 
-{error}
+          error &&
 
-</div>
+          <div
 
-}
-<DialogFooter>
+            className="
+            rounded-md
+            bg-destructive/10
+            p-3
+            text-sm
+            text-destructive
+            "
 
+          >
 
+            {error}
 
+          </div>
 
+        }
 
-<Button
+        <DialogFooter>
 
+          <Button
 
-variant="outline"
+            variant="outline"
 
+            onClick={()=>
 
-onClick={()=>handleClose(false)}
+              handleClose(false)
 
+            }
 
-disabled={loading}
+            disabled={loading}
 
+          >
 
->
+            Batal
 
+          </Button>
 
-Batal
+          <Button
 
+            onClick={handleSubmit}
 
-</Button>
+            disabled={
 
+              loading ||
 
+              !judul.trim() ||
 
+              !createdBy.trim() ||
 
+              !deskripsi.trim() ||
 
+              !cover
 
+            }
 
+          >
 
+            {
 
-<Button
+              loading
 
+              ?
 
-onClick={handleSubmit}
+              "Menyimpan..."
 
+              :
 
-disabled={
+              "Publikasikan"
 
-loading ||
+            }
 
-!judul.trim() ||
+          </Button>
 
-!createdBy.trim() ||
+        </DialogFooter>
 
-!cover
+      </DialogContent>
 
-}
+    </Dialog>
 
-
-
->
-
-
-{
-
-
-loading
-
-?
-
-"Menyimpan..."
-
-:
-
-"Publikasikan"
-
-}
-
-
-
-</Button>
-
-
-
-
-
-
-
-</DialogFooter>
-
-
-
-
-
-
-
-
-
-</DialogContent>
-
-
-
-
-
-</Dialog>
-
-
-)
+  )
 
 }

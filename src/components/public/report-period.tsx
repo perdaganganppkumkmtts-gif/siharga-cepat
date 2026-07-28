@@ -103,7 +103,7 @@ periodeAnalisis &&
 `${formatTanggal(
 periodeAnalisis.mulai
 )}
-s.d.
+s/d
 ${formatTanggal(
 periodeAnalisis.sampai
 )}`
@@ -134,7 +134,7 @@ periodePembanding &&
 `${formatTanggal(
 periodePembanding.mulai
 )}
-s.d.
+s/d
 ${formatTanggal(
 periodePembanding.sampai
 )}`

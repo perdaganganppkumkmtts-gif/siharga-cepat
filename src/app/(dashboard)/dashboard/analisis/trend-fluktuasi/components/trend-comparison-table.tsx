@@ -23,7 +23,7 @@ data.historyPrevious ?? []
 
 
 
-// ambil jumlah baris terbanyak
+// jumlah baris berdasarkan periode terpanjang
 const maxLength =
 Math.max(
   current.length,
@@ -39,6 +39,7 @@ className="
 rounded-xl
 border
 overflow-hidden
+overflow-x-auto
 "
 >
 
@@ -59,39 +60,54 @@ bg-muted
 
 <tr>
 
+
 <th
 className="
 p-3
 text-left
 "
 >
-Tanggal
+Tanggal Periode Analisis
 </th>
 
 
 <th
 className="
 p-3
-text-right
+text-left
 "
 >
-Periode Analisis
+Harga Periode Analisis
 </th>
+
 
 
 <th
 className="
 p-3
-text-right
+text-left
 "
 >
-Periode Pembanding
+Tanggal Periode Pembanding
+</th>
+
+
+
+<th
+className="
+p-3
+text-left
+"
+>
+Harga Periode Pembanding
 </th>
 
 
 </tr>
 
+
 </thead>
+
 
 
 
@@ -122,15 +138,17 @@ previous[index]
 return (
 
 <tr
+
 key={index}
+
 className="
 border-t
 "
+
 >
 
 
-
-{/* TANGGAL */}
+{/* TANGGAL ANALISIS */}
 
 <td
 className="
@@ -150,16 +168,6 @@ currentItem.time
 
 :
 
-previousItem
-
-?
-
-formatTanggal(
-previousItem.time
-)
-
-:
-
 "-"
 
 }
@@ -170,12 +178,12 @@ previousItem.time
 
 
 
-{/* PERIODE ANALISIS */}
+{/* HARGA ANALISIS */}
 
 <td
 className="
 p-3
-text-right
+text-left
 font-medium
 "
 >
@@ -202,12 +210,43 @@ currentItem.value
 
 
 
-{/* PERIODE PEMBANDING */}
+{/* TANGGAL PEMBANDING */}
 
 <td
 className="
 p-3
-text-right
+"
+>
+
+{
+
+previousItem
+
+?
+
+formatTanggal(
+previousItem.time
+)
+
+:
+
+"-"
+
+}
+
+</td>
+
+
+
+
+
+{/* HARGA PEMBANDING */}
+
+<td
+className="
+p-3
+text-left
+font-medium
 "
 >
 
@@ -260,6 +299,8 @@ previousItem.value
 
 
 
+
+
 function formatTanggal(
 tanggal:string
 ){
@@ -277,6 +318,7 @@ year:"numeric"
 )
 
 }
+
 
 
 

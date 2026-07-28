@@ -9,21 +9,27 @@ interface Props {
 
 
 
+
 export function TrendComparisonTable({
+
   data
+
 }:Props){
+
 
 
 const current =
 data.history ?? []
 
 
+
 const previous =
-data.historyPrevious ?? []
+data.previousHistory ??
+data.historyPrevious ??
+[]
 
 
 
-// ambil jumlah baris terbanyak
 const maxLength =
 Math.max(
   current.length,
@@ -32,66 +38,149 @@ Math.max(
 
 
 
+
+
 return (
 
+
 <div
+
 className="
 rounded-xl
 border
 overflow-hidden
 "
+
+>
+
+
+{/* PETUNJUK MOBILE */}
+
+<div
+
+className="
+block
+md:hidden
+px-3
+py-2
+text-xs
+text-muted-foreground
+bg-muted/50
+"
+
+>
+
+Geser ke kiri untuk melihat informasi lainnya
+
+</div>
+
+
+
+
+<div
+
+className="
+overflow-x-auto
+"
+
 >
 
 
 <table
+
 className="
+min-w-[700px]
 w-full
 text-sm
 "
+
 >
 
 
 <thead
+
 className="
 bg-muted
 "
+
 >
+
 
 <tr>
 
+
 <th
+
 className="
 p-3
 text-left
+whitespace-nowrap
 "
+
 >
-Tanggal
+
+Tanggal Periode Analisis
+
 </th>
+
+
 
 
 <th
+
 className="
 p-3
-text-right
+text-left
+whitespace-nowrap
 "
+
 >
-Periode Analisis
+
+Harga Periode Analisis
+
 </th>
+
+
 
 
 <th
+
 className="
 p-3
-text-right
+text-left
+whitespace-nowrap
 "
+
 >
-Periode Pembanding
+
+Tanggal Periode Pembanding
+
 </th>
+
+
+
+
+<th
+
+className="
+p-3
+text-left
+whitespace-nowrap
+"
+
+>
+
+Harga Periode Pembanding
+
+</th>
+
 
 
 </tr>
 
+
 </thead>
+
 
 
 
@@ -101,17 +190,20 @@ Periode Pembanding
 
 {
 
-Array.from(
-{
-length:maxLength
-}
 
-).map(
+Array.from({
+
+length:maxLength
+
+}).map(
+
 (_,index)=>{
+
 
 
 const currentItem =
 current[index]
+
 
 
 const previousItem =
@@ -119,24 +211,36 @@ previous[index]
 
 
 
+
+
 return (
 
+
 <tr
+
 key={index}
+
 className="
 border-t
 "
+
 >
 
 
 
-{/* TANGGAL */}
+
+{/* TANGGAL ANALISIS */}
 
 <td
+
 className="
 p-3
+text-left
+whitespace-nowrap
 "
+
 >
+
 
 {
 
@@ -150,19 +254,10 @@ currentItem.time
 
 :
 
-previousItem
-
-?
-
-formatTanggal(
-previousItem.time
-)
-
-:
-
 "-"
 
 }
+
 
 </td>
 
@@ -170,15 +265,21 @@ previousItem.time
 
 
 
-{/* PERIODE ANALISIS */}
+
+
+{/* HARGA ANALISIS */}
 
 <td
+
 className="
 p-3
-text-right
+text-left
+whitespace-nowrap
 font-medium
 "
+
 >
+
 
 {
 
@@ -196,20 +297,65 @@ currentItem.value
 
 }
 
+
 </td>
 
 
 
 
 
-{/* PERIODE PEMBANDING */}
+
+
+{/* TANGGAL PEMBANDING */}
 
 <td
+
 className="
 p-3
-text-right
+text-left
+whitespace-nowrap
 "
+
 >
+
+
+{
+
+previousItem
+
+?
+
+formatTanggal(
+previousItem.time
+)
+
+:
+
+"-"
+
+}
+
+
+</td>
+
+
+
+
+
+
+
+{/* HARGA PEMBANDING */}
+
+<td
+
+className="
+p-3
+text-left
+whitespace-nowrap
+"
+
+>
+
 
 {
 
@@ -227,12 +373,16 @@ previousItem.value
 
 }
 
+
 </td>
+
+
 
 
 
 </tr>
 
+
 )
 
 
@@ -240,7 +390,9 @@ previousItem.value
 
 )
 
+
 }
+
 
 
 </tbody>
@@ -252,39 +404,64 @@ previousItem.value
 </div>
 
 
+</div>
+
+
 )
 
+
 }
+
+
 
 
 
 
 
 function formatTanggal(
+
 tanggal:string
+
 ){
 
+
 return new Date(
+
 tanggal
-)
-.toLocaleDateString(
-"id-ID",
-{
-day:"numeric",
-month:"long",
-year:"numeric"
-}
+
 )
 
+.toLocaleDateString(
+
+"id-ID",
+
+{
+
+day:"numeric",
+
+month:"long",
+
+year:"numeric"
+
 }
+
+)
+
+
+}
+
+
 
 
 
 
 
 function rupiah(
+
 value:number
+
 ){
+
 
 return (
 
@@ -292,5 +469,6 @@ return (
 .toLocaleString("id-ID")}`
 
 )
+
 
 }
