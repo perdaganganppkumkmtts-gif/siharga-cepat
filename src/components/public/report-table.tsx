@@ -96,10 +96,6 @@ className="
 p-3
 text-left
 whitespace-nowrap
-sticky
-left-0
-z-20
-bg-muted
 "
 >
 No
@@ -110,10 +106,6 @@ className="
 p-3
 text-left
 whitespace-nowrap
-sticky
-left-[45px]
-z-20
-bg-muted
 "
 >
 Komoditas
@@ -176,14 +168,10 @@ className="
 p-3
 text-left
 whitespace-nowrap
-sticky
-left-0
-z-10
-bg-background
 "
 >
-                      {index + 1}
-                    </td>
+{index + 1}
+</td>
 
                     <td
 className="
@@ -191,14 +179,10 @@ p-3
 text-left
 font-medium
 whitespace-nowrap
-sticky
-left-[45px]
-z-10
-bg-background
 "
 >
-                      {item.nama}
-                    </td>
+{item.nama}
+</td>
 
                     <td
                       className="
