@@ -60,7 +60,11 @@ Koperasi dan Usaha Mikro Kecil Menengah
 Kabupaten Timor Tengah Selatan
 
 </p>
+<p>
 
+*) Data ini berdasarkan hasil pemantauan harga SP2KP pada Pasar Inpres SoE
+
+</p>
 
 
 

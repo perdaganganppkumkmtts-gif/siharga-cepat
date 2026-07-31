@@ -126,20 +126,14 @@ export function getNavigation(role: UserRole) {
               icon:FileText,
             },
             {
+              title:"Daftar Laporan",
+              url:"/dashboard/daftar-publikasi",
+              icon:Newspaper,
+            },
+            {
               title:"Berita",
               url:"/dashboard/publikasi/berita",
               icon:Newspaper,
-            },
-          ],
-        },
-
-        {
-          label: "Utilities",
-          items: [
-            {
-              title: "Import Data Historis",
-              url: "/dashboard/utilities/import-harga",
-              icon: Database,
             },
           ],
         },
